@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/base}">
+<head>
+    <title>Área Administrativa</title>
+</head>
+<body>
+    <div layout:fragment="conteudo">
+        <div class="container mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Gerenciamento de Atividades</h2>
+                <a th:href="@{/admin/cadastro}" class="btn btn-primary">Adicionar Nova Atividade</a>
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Categoria</th>
+                        <th>Etapa Educacional</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="atividade : ${atividades}">
+                        <td th:text="${atividade.id}"></td>
+                        <td th:text="${atividade.nome}"></td>
+                        <td th:text="${atividade.categoria}"></td>
+                        <td th:text="${atividade.etapaEducacional}"></td>
+                        <td>
+                            <a th:href="@{/admin/editar/{id}(id=${atividade.id})}" class="btn btn-sm btn-info">Editar</a>
+                            <a th:href="@{/admin/apagar/{id}(id=${atividade.id})}" class="btn btn-sm btn-danger">Apagar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+</body>
+</html>

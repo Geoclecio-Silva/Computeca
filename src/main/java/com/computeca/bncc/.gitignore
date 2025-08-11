@@ -1,0 +1,19 @@
+# Arquivos de Build
+/target/
+
+# Arquivos de IDE (IntelliJ, VS Code, etc.)
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# Dependências do Maven e Gradle
+.mvn/
+.gradle/
+build/
+bin/
+
+# Logs e outros
+*.log
+!README.md

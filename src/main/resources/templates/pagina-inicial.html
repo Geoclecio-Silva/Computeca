@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/base}">
+<head>
+    <title>Início</title>
+</head>
+<body>
+    <div layout:fragment="conteudo">
+        
+        <div class="hero-video-container">
+            <div class="video-overlay"></div>
+            <video autoplay loop muted playsinline class="hero-video">
+                <source th:src="@{/videos/background.mp4}" type="video/mp4">
+            </video>
+            <div class="hero-content text-center text-white">
+                <h1 class="display-4">Referatório de Atividades de Computação</h1>
+                <p class="lead">Uma coletânea de recursos educacionais alinhados à BNCC.</p>
+            </div>
+        </div>
+        
+        <div class="hero-spacer"></div>
+
+        <div id="content-container" class="container-fluid mt-4 main-content">
+            
+            <form id="search-form" class="mb-5">
+                <div class="row g-2 align-items-end">
+                    <div class="col-md-3">
+                        <label for="nome" class="form-label">Nome da Atividade</label>
+                        <input type="text" class="form-control" id="nome" name="nome" placeholder="Ex: Scratch"
+                            th:value="${nomeParam}">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="categoria" class="form-label">Categoria</label>
+                        <select id="categoria" name="categoria" class="form-select">
+                            <option value="">Todas</option>
+                            <option th:each="cat : ${categorias}"
+                                    th:value="${cat.name()}"
+                                    th:text="${thymeleafUtil.formatarNomeEnum(cat.name())}"
+                                    th:selected="${categoriaParam == cat.name()}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="etapa" class="form-label">Etapa Educacional</label>
+                        <select id="etapa" name="etapa" class="form-select">
+                            <option value="">Todas</option>
+                            <option th:each="etp : ${etapas}" th:value="${etp}"
+                                    th:text="${etp}" th:selected="${etapaParam == etp}"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="habilidade" class="form-label">Habilidade BNCC</label>
+                        <input type="text" class="form-control" id="habilidade" name="habilidade" placeholder="Ex: Pensamento Computacional"
+                            th:value="${habilidadeParam}">
+                    </div>
+                    <div class="col-12 text-center mt-3">
+                        <button type="submit" class="btn btn-primary me-2">Buscar</button>
+                        <a th:href="@{/}" class="btn btn-secondary">Limpar Filtros</a>
+                    </div>
+                </div>
+            </form>
+
+            <div id="conteudo-atividades" th:replace="fragments/resultados :: resultados">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

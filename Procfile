@@ -1,0 +1,1 @@
+web: java -jar -Dspring.profiles.active=prod target/bncc-0.0.1-SNAPSHOT.jar

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/base}">
+<head>
+    <title>Login Administrativo</title>
+</head>
+<body>
+
+    <div layout:fragment="conteudo" class="d-flex justify-content-center align-items-center" style="height: 80vh;">
+        <div class="card p-4" style="max-width: 400px; width: 100%;">
+            <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                Usuário ou senha inválidos.
+            </div>
+            <div th:if="${param.logout}" class="alert alert-success" role="alert">
+                Você foi desconectado.
+            </div>
+            <h2 class="text-center mb-4">Login Administrativo</h2>
+            <form th:action="@{/login}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                
+                <div class="mb-3">
+                    <label for="username" class="form-label">Usuário</label>
+                    <input type="text" id="username" name="username" class="form-control" required autofocus>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Senha</label>
+                    <input type="password" id="password" name="password" class="form-control" required>
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Entrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
