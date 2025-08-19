@@ -2,6 +2,8 @@
 # Usa uma imagem do OpenJDK 21 para compilar o código
 FROM eclipse-temurin:21-jdk-jammy AS build
 
+RUN apt-get update && apt-get install -y maven
+
 # Define o diretório de trabalho no container
 WORKDIR /app
 
