@@ -1,10 +1,28 @@
+databases:
+  - name: computeca
+    databaseName: computeca_db
+    user: minha_user
+    plan: free
+
 services:
   - type: web
     name: computeca
     env: java
     plan: free
-    buildCommand: "./mvnw clean install -DskipTests"
+    buildCommand: "./mvnw clean package -DskipTests"
     startCommand: "java -jar target/*.jar"
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: computeca-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: computeca-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: computeca-db
+          property: password
