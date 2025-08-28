@@ -16,13 +16,13 @@ services:
         value: prod
       - key: SPRING_DATASOURCE_URL
         fromDatabase:
-          name: computeca-db
+          name: computeca
           property: connectionString
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
-          name: computeca-db
+          name: computeca
           property: user
       - key: SPRING_DATASOURCE_PASSWORD
         fromDatabase:
-          name: computeca-db
+          name: computeca
           property: password
