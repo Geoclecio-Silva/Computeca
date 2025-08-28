@@ -22,6 +22,14 @@ public class Habilidade {
     @Column(columnDefinition = "TEXT")
     private String descricao;
     
+    public Habilidade() {}
+
+    public Habilidade(String etapaEducacional, String codigoHabilidade, String descricao) {
+    this.etapaEducacional = etapaEducacional;
+    this.codigoHabilidade = codigoHabilidade;
+    this.descricao = descricao;
+}
+
 
     // Getters e Setters
     public Long getId() {
