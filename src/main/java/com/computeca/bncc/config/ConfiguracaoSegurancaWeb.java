@@ -21,7 +21,11 @@ public class ConfiguracaoSegurancaWeb {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests((authorize) -> authorize
+                // Primeiro, garanta que a página de login, CSS, etc. sejam públicas.
+                .requestMatchers("/login").permitAll()
+                // A página de administração requer o papel de ADMIN.
                 .requestMatchers("/admin/**").hasRole("ADMIN")
+                // Todas as outras requisições são permitidas.
                 .anyRequest().permitAll()
             )
             .formLogin(formLogin -> formLogin
