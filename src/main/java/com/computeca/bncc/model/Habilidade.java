@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+
 
 @Entity
 @Table(name = "habilidades")
@@ -15,10 +17,13 @@ public class Habilidade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "A etapa educacional é obrigatória")
     private String etapaEducacional;
 
+    @NotBlank(message = "O código da habilidade é obrigatório")
     private String codigoHabilidade;
-
+    
+    @NotBlank(message = "A descrição é obrigatória")
     @Column(columnDefinition = "TEXT")
     private String descricao;
     
