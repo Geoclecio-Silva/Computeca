@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,6 +65,8 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+    // --- CÓDIGO CORRIGIDO COMEÇA AQUI ---
+
     @GetMapping("/editar/{id}")
     public String exibirFormularioEdicao(@PathVariable Long id, Model model) {
         Atividade atividade = atividadeRepository.findById(id)
@@ -78,47 +81,51 @@ public class AdminController {
     }
 
     @PostMapping("/editar/{id}")
-    public String editarAtividade(@PathVariable Long id, Atividade atividade) throws IOException {
+    public String editarAtividade(@PathVariable Long id, @ModelAttribute Atividade atividadeDoForm) throws IOException {
         Optional<Atividade> atividadeExistenteOpt = atividadeRepository.findById(id);
 
         if (atividadeExistenteOpt.isPresent()) {
             Atividade atividadeExistente = atividadeExistenteOpt.get();
 
+            // Lógica de atualização de campos
+            atividadeExistente.setNome(atividadeDoForm.getNome());
+            atividadeExistente.setDescricao(atividadeDoForm.getDescricao());
+            atividadeExistente.setCategoria(atividadeDoForm.getCategoria());
+            atividadeExistente.setLink(atividadeDoForm.getLink());
+
             // Lógica de habilidades BNCC
-            // Apenas atualiza se o campo foi preenchido ou deixado em branco
-            if (atividade.getHabilidadesBncc() != null) {
-                if (!atividade.getHabilidadesBncc().isEmpty() && atividade.getHabilidadesBncc().get(0) != null) {
-                    List<String> habilidades = Arrays.stream(atividade.getHabilidadesBncc().get(0).split(","))
+            if (atividadeDoForm.getHabilidadesBncc() != null && !atividadeDoForm.getHabilidadesBncc().isEmpty()) {
+                String habilidadesComoString = atividadeDoForm.getHabilidadesBncc().get(0);
+                if (!habilidadesComoString.isEmpty()) {
+                    List<String> habilidades = Arrays.stream(habilidadesComoString.split(","))
                             .map(String::trim)
                             .collect(Collectors.toList());
                     atividadeExistente.setHabilidadesBncc(habilidades);
                 } else {
                     atividadeExistente.setHabilidadesBncc(new ArrayList<>());
                 }
+            } else {
+                 atividadeExistente.setHabilidadesBncc(new ArrayList<>());
             }
 
             // Lógica para etapa educacional
-            if (atividade.getEtapaEducacional() != null) {
-                atividadeExistente.setEtapaEducacional(atividade.getEtapaEducacional());
+            if (atividadeDoForm.getEtapaEducacional() != null) {
+                atividadeExistente.setEtapaEducacional(atividadeDoForm.getEtapaEducacional());
             }
 
             // Lógica de imagem
-            if (atividade.getImagem() != null && !atividade.getImagem().isEmpty()) {
-                String urlImagem = servicoImagem.salvarImagem(atividade.getImagem());
+            if (atividadeDoForm.getImagem() != null && !atividadeDoForm.getImagem().isEmpty()) {
+                String urlImagem = servicoImagem.salvarImagem(atividadeDoForm.getImagem());
                 atividadeExistente.setUrlImagem(urlImagem);
             }
-
-            // Atualiza os outros campos que não são listas ou arquivos
-            atividadeExistente.setNome(atividade.getNome());
-            atividadeExistente.setDescricao(atividade.getDescricao());
-            atividadeExistente.setCategoria(atividade.getCategoria());
-            atividadeExistente.setLink(atividade.getLink());
 
             atividadeRepository.save(atividadeExistente);
         }
 
         return "redirect:/admin";
     }
+
+    // --- CÓDIGO CORRIGIDO TERMINA AQUI ---
 
     @GetMapping("/apagar/{id}")
     public String confirmarExclusao(@PathVariable Long id, Model model) {
