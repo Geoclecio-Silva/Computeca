@@ -34,7 +34,7 @@ public class Atividade {
     @Column(length = 2000)
     private String descricao;
 
-    @Enumerated(EnumType.STRING) // Anotação para persistir o enum como String
+    @Enumerated(EnumType.STRING)
     private Categoria categoria;
 
     private String etapaEducacional;
@@ -49,6 +49,29 @@ public class Atividade {
     @Transient
     private MultipartFile imagem;
 
+    // Novos campos transient para lidar com o formulário
+    @Transient
+    private String habilidadesComoString;
+
+    @Transient
+    private String etapaComoString; // Adicionado para garantir que o valor não seja perdido
+
+    // Adicione os getters e setters para os novos campos
+    public String getHabilidadesComoString() {
+        return habilidadesComoString;
+    }
+
+    public void setHabilidadesComoString(String habilidadesComoString) {
+        this.habilidadesComoString = habilidadesComoString;
+    }
+
+    public String getEtapaComoString() {
+        return etapaComoString;
+    }
+
+    public void setEtapaComoString(String etapaComoString) {
+        this.etapaComoString = etapaComoString;
+    }
 
     public Atividade(String nome, String descricao) {
         this.nome = nome;
