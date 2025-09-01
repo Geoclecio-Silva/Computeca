@@ -1,19 +1,21 @@
 package com.computeca.bncc.controller;
 
-import com.computeca.bncc.model.Atividade;
-import com.computeca.bncc.repository.AtividadeRepository;
-import com.computeca.bncc.service.ServicoImagem;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+
+import com.computeca.bncc.model.Atividade;
+import com.computeca.bncc.repository.AtividadeRepository;
+import com.computeca.bncc.service.ServicoImagem;
 
 @Controller
 @RequestMapping("/admin")
@@ -77,30 +79,40 @@ public class AdminController {
     @PostMapping("/editar/{id}")
     public String editarAtividade(@PathVariable Long id, Atividade atividade) throws IOException {
         Atividade atividadeExistente = atividadeRepository.findById(id)
-                                                       .orElseThrow(() -> new IllegalArgumentException("ID de atividade inválido:" + id));
+            .orElseThrow(() -> new IllegalArgumentException("ID de atividade inválido:" + id));
 
-        // Lógica de habilidades BNCC
+        // 1. Lógica de habilidades BNCC
+        //    Atualiza SOMENTE se o campo foi preenchido no formulário.
         if (atividade.getHabilidadesBncc() != null && !atividade.getHabilidadesBncc().isEmpty()) {
             List<String> habilidades = Arrays.stream(atividade.getHabilidadesBncc().get(0).split(","))
-                                               .map(String::trim)
-                                               .collect(Collectors.toList());
+                .map(String::trim)
+                .collect(Collectors.toList());
             atividadeExistente.setHabilidadesBncc(habilidades);
-        } else {
-            atividadeExistente.setHabilidadesBncc(new ArrayList<>());
         }
+        // Não precisa de um `else`. Se o campo não veio, o valor existente é mantido.
 
-        // Lógica de imagem
+        // 2. Lógica de imagem
         if (atividade.getImagem() != null && !atividade.getImagem().isEmpty()) {
             String urlImagem = servicoImagem.salvarImagem(atividade.getImagem());
             atividadeExistente.setUrlImagem(urlImagem);
         }
 
+        // 3. Atualiza os outros campos
+        //    É preciso checar se os outros campos que não são obrigatórios são nulos
+        //    Se a etapa educacional for um enum ou String, essa verificação é crucial
+        if (atividade.getEtapaEducacional() != null) {
+        atividadeExistente.setEtapaEducacional(atividade.getEtapaEducacional());
+        }
+
+        // Atualiza os outros campos que não são listas ou arquivos.
+        // Esses campos provavelmente não precisam de checagem de nulo
+        // se eles sempre são enviados pelo formulário.
         atividadeExistente.setNome(atividade.getNome());
         atividadeExistente.setDescricao(atividade.getDescricao());
         atividadeExistente.setCategoria(atividade.getCategoria());
-        atividadeExistente.setEtapaEducacional(atividade.getEtapaEducacional());
         atividadeExistente.setLink(atividade.getLink());
 
+        // 4. Salva o objeto atualizado no repositório
         atividadeRepository.save(atividadeExistente);
         return "redirect:/admin";
     }
