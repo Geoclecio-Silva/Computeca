@@ -65,8 +65,6 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    // --- CÓDIGO CORRIGIDO COMEÇA AQUI ---
-
     @GetMapping("/editar/{id}")
     public String exibirFormularioEdicao(@PathVariable Long id, Model model) {
         Atividade atividade = atividadeRepository.findById(id)
@@ -87,28 +85,29 @@ public class AdminController {
         if (atividadeExistenteOpt.isPresent()) {
             Atividade atividadeExistente = atividadeExistenteOpt.get();
 
-            // Lógica de atualização de campos
+            // Atualiza os campos que não precisam de lógica especial
             atividadeExistente.setNome(atividadeDoForm.getNome());
             atividadeExistente.setDescricao(atividadeDoForm.getDescricao());
             atividadeExistente.setCategoria(atividadeDoForm.getCategoria());
             atividadeExistente.setLink(atividadeDoForm.getLink());
 
-            // Lógica de habilidades BNCC
-            if (atividadeDoForm.getHabilidadesBncc() != null && !atividadeDoForm.getHabilidadesBncc().isEmpty()) {
+            // Lógica de habilidades BNCC (CORRIGIDA)
+            // Apenas atualiza se o valor do formulário não for nulo
+            if (atividadeDoForm.getHabilidadesBncc() != null) {
                 String habilidadesComoString = atividadeDoForm.getHabilidadesBncc().get(0);
-                if (!habilidadesComoString.isEmpty()) {
+                if (habilidadesComoString != null && !habilidadesComoString.trim().isEmpty()) {
                     List<String> habilidades = Arrays.stream(habilidadesComoString.split(","))
                             .map(String::trim)
                             .collect(Collectors.toList());
                     atividadeExistente.setHabilidadesBncc(habilidades);
                 } else {
+                     // Se o campo for deixado em branco, a lista será esvaziada. 
+                     // Se você quer manter as antigas, remova esta linha.
                     atividadeExistente.setHabilidadesBncc(new ArrayList<>());
                 }
-            } else {
-                 atividadeExistente.setHabilidadesBncc(new ArrayList<>());
             }
 
-            // Lógica para etapa educacional
+            // Lógica para etapa educacional (CORRIGIDA)
             if (atividadeDoForm.getEtapaEducacional() != null) {
                 atividadeExistente.setEtapaEducacional(atividadeDoForm.getEtapaEducacional());
             }
@@ -124,8 +123,6 @@ public class AdminController {
 
         return "redirect:/admin";
     }
-
-    // --- CÓDIGO CORRIGIDO TERMINA AQUI ---
 
     @GetMapping("/apagar/{id}")
     public String confirmarExclusao(@PathVariable Long id, Model model) {
