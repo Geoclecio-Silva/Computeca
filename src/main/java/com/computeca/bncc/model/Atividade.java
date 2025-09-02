@@ -1,5 +1,6 @@
 package com.computeca.bncc.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -24,7 +25,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "atividades")
 public class Atividade {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -40,39 +41,44 @@ public class Atividade {
     private String etapaEducacional;
 
     @ElementCollection
-    private List<String> habilidadesBncc;
+    private List<String> habilidadesBncc = new ArrayList<>();
 
     private String link;
 
     private String urlImagem;
 
+    // Para upload de imagem no formulário
     @Transient
     private MultipartFile imagem;
 
-    // Campos auxiliares para exibir no formulário
+    // Campos transient usados para edição no formulário
     @Transient
     private String habilidadesComoString;
 
     @Transient
     private String etapaComoString;
 
-    public void prepararParaEdicao() {
-        // Converte a lista para string no formulário
-        if (habilidadesBncc != null && !habilidadesBncc.isEmpty()) {
-            this.habilidadesComoString = String.join(", ", habilidadesBncc);
-        }
-        // Copia a etapa para o transient (evita null no select)
-        this.etapaComoString = this.etapaEducacional;
+    // Construtor simplificado
+    public Atividade(String nome, String descricao) {
+        this.nome = nome;
+        this.descricao = descricao;
     }
 
-    public void atualizarAPartirDoFormulario() {
-        // Atualiza lista de habilidades a partir da string do form
-        if (habilidadesComoString != null && !habilidadesComoString.isBlank()) {
-            this.habilidadesBncc = List.of(habilidadesComoString.split("\\s*,\\s*"));
+    // Popula os campos transient a partir dos dados persistidos
+    public void prepararParaEdicao() {
+        this.etapaComoString = this.etapaEducacional;
+        if (this.habilidadesBncc != null && !this.habilidadesBncc.isEmpty()) {
+            this.habilidadesComoString = String.join(", ", this.habilidadesBncc);
         }
-        // Atualiza etapa
-        if (etapaComoString != null && !etapaComoString.isBlank()) {
-            this.etapaEducacional = etapaComoString;
+    }
+
+    // Atualiza os campos persistentes a partir dos campos do formulário
+    public void atualizarAPartirDoFormulario() {
+        this.etapaEducacional = this.etapaComoString;
+        if (this.habilidadesComoString != null && !this.habilidadesComoString.isBlank()) {
+            this.habilidadesBncc = List.of(this.habilidadesComoString.split("\\s*,\\s*"));
+        } else {
+            this.habilidadesBncc = new ArrayList<>();
         }
     }
 }
