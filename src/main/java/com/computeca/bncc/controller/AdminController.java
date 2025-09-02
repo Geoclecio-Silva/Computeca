@@ -130,4 +130,10 @@ public class AdminController {
         atividadeRepository.deleteById(id);
         return "redirect:/admin";
     }
+
+    @GetMapping("/sobre")
+    public String exibirPaginaSobre() {
+        return "sobre";
+    }
+
 }
