@@ -84,4 +84,9 @@ public class PaginaInicialController {
 
         return "fragments/resultados :: resultados";
     }
+    
+    @GetMapping("/sobre")
+    public String exibirPaginaSobre() {
+        return "sobre";
+    }
 }

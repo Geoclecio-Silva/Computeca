@@ -131,9 +131,6 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/sobre")
-    public String exibirPaginaSobre() {
-        return "sobre";
-    }
+    
 
 }
