@@ -1,6 +1,8 @@
 package com.computeca.bncc.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.io.IOException;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,66 +10,99 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.computeca.bncc.model.Atividade;
 import com.computeca.bncc.repository.AtividadeRepository;
+import com.computeca.bncc.service.ServicoImagem;
 
 @Controller
-@RequestMapping("/admin/atividades")
+@RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
-    private AtividadeRepository atividadeRepository;
+    private final AtividadeRepository atividadeRepository;
+    private final ServicoImagem servicoImagem;
 
-    // Lista de atividades
+    public AdminController(AtividadeRepository atividadeRepository, ServicoImagem servicoImagem) {
+        this.atividadeRepository = atividadeRepository;
+        this.servicoImagem = servicoImagem;
+    }
+
+    // Lista todas as atividades
     @GetMapping
-    public String listar(Model model) {
+    public String listarAtividades(Model model) {
         model.addAttribute("atividades", atividadeRepository.findAll());
-        return "admin/listar";
+        return "admin/lista-atividades";
     }
 
-    // Novo formulário
-    @GetMapping("/novo")
-    public String novo(Model model) {
-        model.addAttribute("atividade", new Atividade());
-        return "admin/formulario";
-    }
-
-    // Editar formulário
-    @GetMapping("/editar/{id}")
-    public String editar(@PathVariable Long id, Model model) {
-        Atividade atividade = atividadeRepository.findById(id).orElseThrow();
-        atividade.prepararParaEdicao(); // 🔑 prepara transient
+    // Formulário de cadastro
+    @GetMapping("/cadastro")
+    public String exibirFormularioCadastro(Model model) {
+        Atividade atividade = new Atividade();
+        atividade.prepararParaEdicao(); // popula transients
         model.addAttribute("atividade", atividade);
-        return "admin/formulario";
+        return "admin/formulario-atividade";
     }
 
-    // Salvar (novo/edição)
-    @PostMapping("/salvar")
-    public String salvar(@ModelAttribute("atividade") Atividade atividade,
-                         @RequestParam(value = "imagem", required = false) MultipartFile imagem) {
-
-        // Atualiza os campos persistentes com base nos transient
+    // Salvar nova atividade
+    @PostMapping("/cadastro")
+    public String cadastrarAtividade(@ModelAttribute Atividade atividade) throws IOException {
         atividade.atualizarAPartirDoFormulario();
+        atividadeRepository.save(atividade);
+        return "redirect:/admin";
+    }
 
-        // Se for edição, manter URL antiga caso não troque imagem
-        if (atividade.getId() != null) {
-            Atividade existente = atividadeRepository.findById(atividade.getId()).orElseThrow();
-            if (atividade.getUrlImagem() == null || atividade.getUrlImagem().isBlank()) {
-                atividade.setUrlImagem(existente.getUrlImagem());
-            }
+    // Formulário de edição
+    @GetMapping("/editar/{id}")
+    public String exibirFormularioEdicao(@PathVariable Long id, Model model) {
+        Atividade atividade = atividadeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID de atividade inválido: " + id));
+        atividade.prepararParaEdicao(); // popula transients
+        model.addAttribute("atividade", atividade);
+        return "admin/formulario-atividade";
+    }
+
+    // Salvar edição
+    @PostMapping("/editar/{id}")
+    public String editarAtividade(@PathVariable Long id, @ModelAttribute Atividade atividade) throws IOException {
+        Atividade existente = atividadeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID de atividade inválido: " + id));
+
+        // Atualiza campos básicos
+        existente.setNome(atividade.getNome());
+        existente.setDescricao(atividade.getDescricao());
+        existente.setCategoria(atividade.getCategoria());
+        existente.setLink(atividade.getLink());
+
+        // Atualiza etapa e habilidades
+        existente.setEtapaEducacional(atividade.getEtapaComoString());
+        if (atividade.getHabilidadesComoString() != null && !atividade.getHabilidadesComoString().isBlank()) {
+            List<String> habilidades = List.of(atividade.getHabilidadesComoString().split("\\s*,\\s*"));
+            existente.setHabilidadesBncc(habilidades);
         }
 
-        atividadeRepository.save(atividade);
-        return "redirect:/admin/atividades";
+        // Atualiza imagem se enviada
+        if (atividade.getImagem() != null && !atividade.getImagem().isEmpty()) {
+            String urlImagem = servicoImagem.salvarImagem(atividade.getImagem());
+            existente.setUrlImagem(urlImagem);
+        }
+
+        atividadeRepository.save(existente);
+        return "redirect:/admin";
     }
 
-    // Deletar
-    @GetMapping("/deletar/{id}")
-    public String deletar(@PathVariable Long id) {
+    // Confirmar exclusão
+    @GetMapping("/apagar/{id}")
+    public String confirmarExclusao(@PathVariable Long id, Model model) {
+        Atividade atividade = atividadeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID de atividade inválido: " + id));
+        model.addAttribute("atividade", atividade);
+        return "admin/confirmar-exclusao";
+    }
+
+    // Deletar atividade
+    @PostMapping("/apagar/{id}")
+    public String apagarAtividade(@PathVariable Long id) {
         atividadeRepository.deleteById(id);
-        return "redirect:/admin/atividades";
+        return "redirect:/admin";
     }
 }
