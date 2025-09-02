@@ -3,20 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/base}">
 <head>
-    <title>Cadastrar Atividade</title>
-    <!-- Adicione o CSS do Select2 -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <style>
-        .select2-container--default .select2-selection--multiple {
-            min-height: 38px;
-            padding: 5px;
-        }
-        .habilidade-option {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-    </style>
+    <title th:text="${atividade.id == null ? 'Cadastrar Nova Atividade' : 'Editar Atividade'}">Cadastrar/Editar Atividade</title>
 </head>
 <body>
     <div layout:fragment="conteudo">
@@ -25,19 +12,22 @@
             
             <form th:action="${atividade.id == null} ? @{/admin/cadastro} : @{/admin/editar/{id}(id=${atividade.id})}"
                   th:object="${atividade}" method="post" enctype="multipart/form-data">
-               
+
                 <input type="hidden" th:field="*{id}">
-               
+
+                <!-- Nome -->
                 <div class="mb-3">
                     <label for="nome" class="form-label">Nome</label>
                     <input type="text" id="nome" th:field="*{nome}" class="form-control">
                 </div>
-               
+
+                <!-- Descrição -->
                 <div class="mb-3">
                     <label for="descricao" class="form-label">Descrição</label>
                     <textarea id="descricao" th:field="*{descricao}" class="form-control" rows="4"></textarea>
                 </div>
-               
+
+                <!-- Categoria -->
                 <div class="mb-3">
                     <label for="categoria" class="form-label">Categoria:</label>
                     <select id="categoria" th:field="*{categoria}" class="form-select">
@@ -48,67 +38,45 @@
                         </option>
                     </select>
                 </div>
-               
+
+                <!-- Etapa Educacional -->
                 <div class="mb-3">
                     <label for="etapaEducacional" class="form-label">Etapa Educacional</label>
-                    <select class="form-select" id="etapaEducacional" th:field="*{etapaEducacional}">
+                    <select class="form-select" id="etapaEducacional" th:field="*{etapaComoString}">
                         <option value="">Selecione a etapa educacional</option>
-                        <option value="Educação Infantil">Educação Infantil</option>
-                        <option value="Ensino Fundamental I">Ensino Fundamental I</option>
-                        <option value="Ensino Fundamental II">Ensino Fundamental II</option>
-                        <option value="Ensino Médio">Ensino Médio</option>
+                        <option value="Educação Infantil" th:selected="${atividade.etapaComoString == 'Educação Infantil'}">Educação Infantil</option>
+                        <option value="Ensino Fundamental I" th:selected="${atividade.etapaComoString == 'Ensino Fundamental I'}">Ensino Fundamental I</option>
+                        <option value="Ensino Fundamental II" th:selected="${atividade.etapaComoString == 'Ensino Fundamental II'}">Ensino Fundamental II</option>
+                        <option value="Ensino Médio" th:selected="${atividade.etapaComoString == 'Ensino Médio'}">Ensino Médio</option>
                     </select>
                 </div>
-               
-                <!-- SELECT MÚLTIPLO PARA HABILIDADES -->
+
+                <!-- Habilidades BNCC -->
                 <div class="mb-3">
-                    <label for="habilidadesBncc" class="form-label">Habilidades BNCC</label>
-                    <select class="form-control" id="habilidadesBncc" name="habilidadesBncc" multiple="multiple" style="width: 100%;">
-                        <option th:each="habilidade : ${todasHabilidades}" 
-                                th:value="${habilidade.split(' - ')[0]}" <!-- Pega apenas o código -->
-                                th:selected="${atividade.habilidadesBncc != null && atividade.habilidadesBncc.contains(habilidade.split(' - ')[0])}"
-                                th:text="${habilidade}"
-                                class="habilidade-option">
-                        </option>
-                    </select>
-                    <small class="form-text text-muted">Selecione uma ou mais habilidades. Use Ctrl+Click para selecionar múltiplas.</small>
+                    <label for="habilidades" class="form-label">Habilidades</label>
+                    <textarea id="habilidades" th:field="*{habilidadesComoString}" class="form-control" rows="3"
+                              placeholder="Digite as habilidades separadas por vírgula"></textarea>
                 </div>
-               
+
+                <!-- Link -->
                 <div class="mb-3">
                     <label for="link" class="form-label">Link da Atividade</label>
                     <input type="url" id="link" th:field="*{link}" class="form-control">
                 </div>
-               
+
+                <!-- Imagem -->
                 <div class="mb-3">
                     <label for="imagem" class="form-label">Imagem do Banner</label>
                     <input type="file" id="imagem" name="imagem" class="form-control">
                 </div>
-               
+
+                <!-- Botões -->
                 <div class="d-flex justify-content-between mt-4">
                     <a th:href="@{/admin}" class="btn btn-secondary">Voltar</a>
                     <button type="submit" class="btn btn-primary">Salvar Atividade</button>
                 </div>
             </form>
         </div>
-        
-        <!-- Scripts do Select2 -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-        <script>
-            $(document).ready(function() {
-                $('#habilidadesBncc').select2({
-                    placeholder: "Selecione as habilidades BNCC",
-                    allowClear: true,
-                    width: '100%'
-                });
-                
-                // Configura a etapa educacional se já existir um valor
-                var etapaSelecionada = $("#etapaEducacional").val();
-                if (etapaSelecionada) {
-                    $("#etapaEducacional").val(etapaSelecionada);
-                }
-            });
-        </script>
     </div>
 </body>
 </html>

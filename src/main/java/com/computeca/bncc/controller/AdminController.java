@@ -1,21 +1,20 @@
 package com.computeca.bncc.controller;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.computeca.bncc.model.Atividade;
-import com.computeca.bncc.model.Habilidade;
 import com.computeca.bncc.repository.AtividadeRepository;
-import com.computeca.bncc.repository.HabilidadeRepository;
 import com.computeca.bncc.service.ServicoImagem;
 
 @Controller
@@ -23,38 +22,42 @@ import com.computeca.bncc.service.ServicoImagem;
 public class AdminController {
 
     private final AtividadeRepository atividadeRepository;
-    private final HabilidadeRepository habilidadeRepository;
     private final ServicoImagem servicoImagem;
 
-    public AdminController(AtividadeRepository atividadeRepository, 
-                         HabilidadeRepository habilidadeRepository,
-                         ServicoImagem servicoImagem) {
+    public AdminController(AtividadeRepository atividadeRepository, ServicoImagem servicoImagem) {
         this.atividadeRepository = atividadeRepository;
-        this.habilidadeRepository = habilidadeRepository;
         this.servicoImagem = servicoImagem;
     }
 
+    // Lista todas as atividades
     @GetMapping
     public String listarAtividades(Model model) {
         model.addAttribute("atividades", atividadeRepository.findAll());
         return "admin/lista-atividades";
     }
 
+    // Formulário de cadastro
     @GetMapping("/cadastro")
     public String exibirFormularioCadastro(Model model) {
-        model.addAttribute("atividade", new Atividade());
-        model.addAttribute("todasHabilidades", getTodasHabilidadesFormatadas());
+        Atividade atividade = new Atividade();
+        model.addAttribute("atividade", atividade);
         return "admin/formulario-atividade";
     }
 
+    // Salvar nova atividade
     @PostMapping("/cadastro")
-    public String cadastrarAtividade(Atividade atividade, 
-                                   @RequestParam(value = "habilidadesBncc", required = false) List<String> habilidadesSelecionadas) throws IOException {
-        
-        // Define as habilidades selecionadas (códigos)
-        atividade.setHabilidadesBncc(habilidadesSelecionadas != null ? habilidadesSelecionadas : List.of());
+    public String cadastrarAtividade(@ModelAttribute Atividade atividade) throws IOException {
+        // Converte a string de habilidades para lista
+        if (atividade.getHabilidadesComoString() != null && !atividade.getHabilidadesComoString().isBlank()) {
+            List<String> habilidades = Arrays.stream(atividade.getHabilidadesComoString().split("\\s*,\\s*"))
+                                             .collect(Collectors.toList());
+            atividade.setHabilidadesBncc(habilidades);
+        }
 
-        // Lógica de imagem
+        // Define a etapa a partir do campo transient
+        atividade.setEtapaEducacional(atividade.getEtapaComoString());
+
+        // Salva a imagem se houver
         if (atividade.getImagem() != null && !atividade.getImagem().isEmpty()) {
             String urlImagem = servicoImagem.salvarImagem(atividade.getImagem());
             atividade.setUrlImagem(urlImagem);
@@ -63,70 +66,66 @@ public class AdminController {
         atividadeRepository.save(atividade);
         return "redirect:/admin";
     }
-   
+
+    // Formulário de edição
     @GetMapping("/editar/{id}")
     public String exibirFormularioEdicao(@PathVariable Long id, Model model) {
         Atividade atividade = atividadeRepository.findById(id)
-                                             .orElseThrow(() -> new IllegalArgumentException("ID de atividade inválido:" + id));
-        
-        model.addAttribute("atividade", atividade);
-        model.addAttribute("todasHabilidades", getTodasHabilidadesFormatadas());
-        return "admin/formulario-atividade";
-    }
-   
-    @PostMapping("/editar/{id}")
-    public String editarAtividade(@PathVariable Long id, 
-                                Atividade atividadeAtualizada,
-                                @RequestParam(value = "habilidadesBncc", required = false) List<String> habilidadesSelecionadas) throws IOException {
-        
-        Atividade atividadeExistente = atividadeRepository.findById(id)
-                                                   .orElseThrow(() -> new IllegalArgumentException("ID de atividade inválido:" + id));
+                .orElseThrow(() -> new IllegalArgumentException("ID de atividade inválido: " + id));
 
-        // Atualiza as habilidades (códigos)
-        atividadeExistente.setHabilidadesBncc(habilidadesSelecionadas != null ? habilidadesSelecionadas : List.of());
-
-        // Atualiza os outros campos
-        atividadeExistente.setNome(atividadeAtualizada.getNome());
-        atividadeExistente.setDescricao(atividadeAtualizada.getDescricao());
-        atividadeExistente.setCategoria(atividadeAtualizada.getCategoria());
-        atividadeExistente.setEtapaEducacional(atividadeAtualizada.getEtapaEducacional());
-        atividadeExistente.setLink(atividadeAtualizada.getLink());
-
-        // Lógica de imagem
-        if (atividadeAtualizada.getImagem() != null && !atividadeAtualizada.getImagem().isEmpty()) {
-            String urlImagem = servicoImagem.salvarImagem(atividadeAtualizada.getImagem());
-            atividadeExistente.setUrlImagem(urlImagem);
+        // Popula campos transient usados pelo formulário
+        atividade.setEtapaComoString(atividade.getEtapaEducacional());
+        if (atividade.getHabilidadesBncc() != null && !atividade.getHabilidadesBncc().isEmpty()) {
+            atividade.setHabilidadesComoString(String.join(", ", atividade.getHabilidadesBncc()));
         }
 
-        atividadeRepository.save(atividadeExistente);
+        model.addAttribute("atividade", atividade);
+        return "admin/formulario-atividade";
+    }
+
+    // Salvar edição
+    @PostMapping("/editar/{id}")
+    public String editarAtividade(@PathVariable Long id, @ModelAttribute Atividade atividade) throws IOException {
+        Atividade existente = atividadeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID de atividade inválido: " + id));
+
+        // Atualiza campos básicos
+        existente.setNome(atividade.getNome());
+        existente.setDescricao(atividade.getDescricao());
+        existente.setCategoria(atividade.getCategoria());
+        existente.setLink(atividade.getLink());
+
+        // Atualiza etapa e habilidades
+        existente.setEtapaEducacional(atividade.getEtapaComoString());
+        if (atividade.getHabilidadesComoString() != null && !atividade.getHabilidadesComoString().isBlank()) {
+            List<String> habilidades = Arrays.stream(atividade.getHabilidadesComoString().split("\\s*,\\s*"))
+                                             .collect(Collectors.toList());
+            existente.setHabilidadesBncc(habilidades);
+        }
+
+        // Atualiza imagem se enviada
+        if (atividade.getImagem() != null && !atividade.getImagem().isEmpty()) {
+            String urlImagem = servicoImagem.salvarImagem(atividade.getImagem());
+            existente.setUrlImagem(urlImagem);
+        }
+
+        atividadeRepository.save(existente);
         return "redirect:/admin";
     }
 
+    // Confirmar exclusão
     @GetMapping("/apagar/{id}")
     public String confirmarExclusao(@PathVariable Long id, Model model) {
         Atividade atividade = atividadeRepository.findById(id)
-                                           .orElseThrow(() -> new IllegalArgumentException("ID de atividade inválido:" + id));
+                .orElseThrow(() -> new IllegalArgumentException("ID de atividade inválido: " + id));
         model.addAttribute("atividade", atividade);
         return "admin/confirmar-exclusao";
     }
 
+    // Deletar atividade
     @PostMapping("/apagar/{id}")
     public String apagarAtividade(@PathVariable Long id) {
         atividadeRepository.deleteById(id);
         return "redirect:/admin";
-    }
-
-    // Método auxiliar para buscar todas as habilidades formatadas
-    private List<String> getTodasHabilidadesFormatadas() {
-        return habilidadeRepository.findAll().stream()
-                .map(h -> h.getCodigoHabilidade() + " - " + h.getDescricao())
-                .collect(Collectors.toList());
-    }
-
-    // Método auxiliar para buscar apenas os códigos das habilidades
-    private List<String> getTodosCodigosHabilidades() {
-        return habilidadeRepository.findAll().stream()
-                .map(Habilidade::getCodigoHabilidade)
-                .collect(Collectors.toList());
     }
 }
