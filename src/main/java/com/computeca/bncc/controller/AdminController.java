@@ -1,7 +1,9 @@
 package com.computeca.bncc.controller;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,7 +40,6 @@ public class AdminController {
     @GetMapping("/cadastro")
     public String exibirFormularioCadastro(Model model) {
         Atividade atividade = new Atividade();
-        atividade.prepararParaEdicao(); // popula transients
         model.addAttribute("atividade", atividade);
         return "admin/formulario-atividade";
     }
@@ -46,7 +47,22 @@ public class AdminController {
     // Salvar nova atividade
     @PostMapping("/cadastro")
     public String cadastrarAtividade(@ModelAttribute Atividade atividade) throws IOException {
-        atividade.atualizarAPartirDoFormulario();
+        // Converte a string de habilidades para lista
+        if (atividade.getHabilidadesComoString() != null && !atividade.getHabilidadesComoString().isBlank()) {
+            List<String> habilidades = Arrays.stream(atividade.getHabilidadesComoString().split("\\s*,\\s*"))
+                                             .collect(Collectors.toList());
+            atividade.setHabilidadesBncc(habilidades);
+        }
+
+        // Define a etapa a partir do campo transient
+        atividade.setEtapaEducacional(atividade.getEtapaComoString());
+
+        // Salva a imagem se houver
+        if (atividade.getImagem() != null && !atividade.getImagem().isEmpty()) {
+            String urlImagem = servicoImagem.salvarImagem(atividade.getImagem());
+            atividade.setUrlImagem(urlImagem);
+        }
+
         atividadeRepository.save(atividade);
         return "redirect:/admin";
     }
@@ -56,7 +72,13 @@ public class AdminController {
     public String exibirFormularioEdicao(@PathVariable Long id, Model model) {
         Atividade atividade = atividadeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID de atividade inválido: " + id));
-        atividade.prepararParaEdicao(); // popula transients
+
+        // Popula campos transient usados pelo formulário
+        atividade.setEtapaComoString(atividade.getEtapaEducacional());
+        if (atividade.getHabilidadesBncc() != null && !atividade.getHabilidadesBncc().isEmpty()) {
+            atividade.setHabilidadesComoString(String.join(", ", atividade.getHabilidadesBncc()));
+        }
+
         model.addAttribute("atividade", atividade);
         return "admin/formulario-atividade";
     }
@@ -76,7 +98,8 @@ public class AdminController {
         // Atualiza etapa e habilidades
         existente.setEtapaEducacional(atividade.getEtapaComoString());
         if (atividade.getHabilidadesComoString() != null && !atividade.getHabilidadesComoString().isBlank()) {
-            List<String> habilidades = List.of(atividade.getHabilidadesComoString().split("\\s*,\\s*"));
+            List<String> habilidades = Arrays.stream(atividade.getHabilidadesComoString().split("\\s*,\\s*"))
+                                             .collect(Collectors.toList());
             existente.setHabilidadesBncc(habilidades);
         }
 

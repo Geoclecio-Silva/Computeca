@@ -1,49 +1,82 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/base}">
 <head>
-    <meta charset="UTF-8">
-    <title>Formulário de Atividade</title>
+    <title th:text="${atividade.id == null ? 'Cadastrar Nova Atividade' : 'Editar Atividade'}">Cadastrar/Editar Atividade</title>
 </head>
 <body>
-    <h2 th:text="${atividade.id != null} ? 'Editar Atividade' : 'Nova Atividade'"></h2>
+    <div layout:fragment="conteudo">
+        <div class="container mt-4">
+            <h2 class="mb-4" th:text="${atividade.id == null ? 'Cadastrar Nova Atividade' : 'Editar Atividade'}"></h2>
+            
+            <form th:action="${atividade.id == null} ? @{/admin/cadastro} : @{/admin/editar/{id}(id=${atividade.id})}"
+                  th:object="${atividade}" method="post" enctype="multipart/form-data">
 
-    <form th:action="@{/admin/atividades/salvar}" th:object="${atividade}" method="post" enctype="multipart/form-data">
+                <input type="hidden" th:field="*{id}">
 
-        <input type="hidden" th:field="*{id}"/>
+                <!-- Nome -->
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome</label>
+                    <input type="text" id="nome" th:field="*{nome}" class="form-control">
+                </div>
 
-        <label>Nome:</label>
-        <input type="text" th:field="*{nome}" required/><br/>
+                <!-- Descrição -->
+                <div class="mb-3">
+                    <label for="descricao" class="form-label">Descrição</label>
+                    <textarea id="descricao" th:field="*{descricao}" class="form-control" rows="4"></textarea>
+                </div>
 
-        <label>Descrição:</label>
-        <textarea th:field="*{descricao}" required></textarea><br/>
+                <!-- Categoria -->
+                <div class="mb-3">
+                    <label for="categoria" class="form-label">Categoria:</label>
+                    <select id="categoria" th:field="*{categoria}" class="form-select">
+                        <option value="">Selecione a Categoria</option>
+                        <option th:each="categoria : ${T(com.computeca.bncc.model.Categoria).values()}"
+                                th:value="${categoria}"
+                                th:text="${#strings.replace(categoria.name(), '_', ' ')}">
+                        </option>
+                    </select>
+                </div>
 
-        <label>Categoria:</label>
-        <select th:field="*{categoria}">
-            <option th:each="c : ${T(com.computeca.bncc.model.Categoria).values()}"
-                    th:value="${c}" th:text="${c}"></option>
-        </select><br/>
+                <!-- Etapa Educacional -->
+                <div class="mb-3">
+                    <label for="etapaEducacional" class="form-label">Etapa Educacional</label>
+                    <select class="form-select" id="etapaEducacional" th:field="*{etapaComoString}">
+                        <option value="">Selecione a etapa educacional</option>
+                        <option value="Educação Infantil" th:selected="${atividade.etapaComoString == 'Educação Infantil'}">Educação Infantil</option>
+                        <option value="Ensino Fundamental I" th:selected="${atividade.etapaComoString == 'Ensino Fundamental I'}">Ensino Fundamental I</option>
+                        <option value="Ensino Fundamental II" th:selected="${atividade.etapaComoString == 'Ensino Fundamental II'}">Ensino Fundamental II</option>
+                        <option value="Ensino Médio" th:selected="${atividade.etapaComoString == 'Ensino Médio'}">Ensino Médio</option>
+                    </select>
+                </div>
 
-        <label>Etapa Educacional:</label>
-        <select th:field="*{etapaComoString}">
-            <option value="Fundamental I">Fundamental I</option>
-            <option value="Fundamental II">Fundamental II</option>
-            <option value="Ensino Médio">Ensino Médio</option>
-        </select><br/>
+                <!-- Habilidades BNCC -->
+                <div class="mb-3">
+                    <label for="habilidades" class="form-label">Habilidades</label>
+                    <textarea id="habilidades" th:field="*{habilidadesComoString}" class="form-control" rows="3"
+                              placeholder="Digite as habilidades separadas por vírgula"></textarea>
+                </div>
 
-        <label>Habilidades BNCC:</label>
-        <textarea th:field="*{habilidadesComoString}" 
-                  placeholder="Separe por vírgula"></textarea><br/>
+                <!-- Link -->
+                <div class="mb-3">
+                    <label for="link" class="form-label">Link da Atividade</label>
+                    <input type="url" id="link" th:field="*{link}" class="form-control">
+                </div>
 
-        <label>Link:</label>
-        <input type="url" th:field="*{link}"/><br/>
+                <!-- Imagem -->
+                <div class="mb-3">
+                    <label for="imagem" class="form-label">Imagem do Banner</label>
+                    <input type="file" id="imagem" name="imagem" class="form-control">
+                </div>
 
-        <label>Imagem:</label>
-        <input type="file" name="imagem"/><br/>
-        <div th:if="${atividade.urlImagem != null}">
-            <img th:src="@{${atividade.urlImagem}}" width="150"/>
+                <!-- Botões -->
+                <div class="d-flex justify-content-between mt-4">
+                    <a th:href="@{/admin}" class="btn btn-secondary">Voltar</a>
+                    <button type="submit" class="btn btn-primary">Salvar Atividade</button>
+                </div>
+            </form>
         </div>
-
-        <button type="submit">Salvar</button>
-    </form>
+    </div>
 </body>
 </html>
