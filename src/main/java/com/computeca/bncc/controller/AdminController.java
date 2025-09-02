@@ -1,12 +1,6 @@
 package com.computeca.bncc.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,127 +8,66 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.computeca.bncc.model.Atividade;
 import com.computeca.bncc.repository.AtividadeRepository;
-import com.computeca.bncc.service.ServicoImagem;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/admin/atividades")
 public class AdminController {
 
-    private final AtividadeRepository atividadeRepository;
-    private final ServicoImagem servicoImagem;
+    @Autowired
+    private AtividadeRepository atividadeRepository;
 
-    public AdminController(AtividadeRepository atividadeRepository, ServicoImagem servicoImagem) {
-        this.atividadeRepository = atividadeRepository;
-        this.servicoImagem = servicoImagem;
-    }
-
+    // Lista de atividades
     @GetMapping
-    public String listarAtividades(Model model) {
+    public String listar(Model model) {
         model.addAttribute("atividades", atividadeRepository.findAll());
-        return "admin/lista-atividades";
+        return "admin/listar";
     }
 
-    @GetMapping("/cadastro")
-    public String exibirFormularioCadastro(Model model) {
+    // Novo formulário
+    @GetMapping("/novo")
+    public String novo(Model model) {
         model.addAttribute("atividade", new Atividade());
-        return "admin/formulario-atividade";
+        return "admin/formulario";
     }
 
-    @PostMapping("/cadastro")
-    public String cadastrarAtividade(Atividade atividade) throws IOException {
-        // Lógica de habilidades BNCC
-        if (atividade.getHabilidadesBncc() != null && !atividade.getHabilidadesBncc().isEmpty()) {
-            List<String> habilidades = Arrays.stream(atividade.getHabilidadesBncc().get(0).split(","))
-                    .map(String::trim)
-                    .collect(Collectors.toList());
-            atividade.setHabilidadesBncc(habilidades);
-        } else {
-            atividade.setHabilidadesBncc(new ArrayList<>());
-        }
+    // Editar formulário
+    @GetMapping("/editar/{id}")
+    public String editar(@PathVariable Long id, Model model) {
+        Atividade atividade = atividadeRepository.findById(id).orElseThrow();
+        atividade.prepararParaEdicao(); // 🔑 prepara transient
+        model.addAttribute("atividade", atividade);
+        return "admin/formulario";
+    }
 
-        // Lógica de imagem
-        if (atividade.getImagem() != null && !atividade.getImagem().isEmpty()) {
-            String urlImagem = servicoImagem.salvarImagem(atividade.getImagem());
-            atividade.setUrlImagem(urlImagem);
+    // Salvar (novo/edição)
+    @PostMapping("/salvar")
+    public String salvar(@ModelAttribute("atividade") Atividade atividade,
+                         @RequestParam(value = "imagem", required = false) MultipartFile imagem) {
+
+        // Atualiza os campos persistentes com base nos transient
+        atividade.atualizarAPartirDoFormulario();
+
+        // Se for edição, manter URL antiga caso não troque imagem
+        if (atividade.getId() != null) {
+            Atividade existente = atividadeRepository.findById(atividade.getId()).orElseThrow();
+            if (atividade.getUrlImagem() == null || atividade.getUrlImagem().isBlank()) {
+                atividade.setUrlImagem(existente.getUrlImagem());
+            }
         }
 
         atividadeRepository.save(atividade);
-        return "redirect:/admin";
+        return "redirect:/admin/atividades";
     }
 
-    @GetMapping("/editar/{id}")
-    public String exibirFormularioEdicao(@PathVariable Long id, Model model) {
-        Atividade atividade = atividadeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("ID de atividade inválido:" + id));
-
-        // Converte a lista de habilidades em uma única string para o formulário
-        String habilidadesComoString = String.join(", ", atividade.getHabilidadesBncc());
-        model.addAttribute("habilidadesComoString", habilidadesComoString);
-
-        model.addAttribute("atividade", atividade);
-        return "admin/formulario-atividade";
-    }
-
-    @PostMapping("/editar/{id}")
-    public String editarAtividade(@PathVariable Long id, @ModelAttribute Atividade atividadeDoForm) throws IOException {
-        Optional<Atividade> atividadeExistenteOpt = atividadeRepository.findById(id);
-
-        if (atividadeExistenteOpt.isPresent()) {
-            Atividade atividadeExistente = atividadeExistenteOpt.get();
-
-            // Atualiza os campos que não precisam de lógica especial
-            atividadeExistente.setNome(atividadeDoForm.getNome());
-            atividadeExistente.setDescricao(atividadeDoForm.getDescricao());
-            atividadeExistente.setCategoria(atividadeDoForm.getCategoria());
-            atividadeExistente.setLink(atividadeDoForm.getLink());
-
-            // Lógica de habilidades BNCC (CORRIGIDA)
-            // Apenas atualiza se o valor do formulário não for nulo
-            if (atividadeDoForm.getHabilidadesBncc() != null) {
-                String habilidadesComoString = atividadeDoForm.getHabilidadesBncc().get(0);
-                if (habilidadesComoString != null && !habilidadesComoString.trim().isEmpty()) {
-                    List<String> habilidades = Arrays.stream(habilidadesComoString.split(","))
-                            .map(String::trim)
-                            .collect(Collectors.toList());
-                    atividadeExistente.setHabilidadesBncc(habilidades);
-                } else {
-                     // Se o campo for deixado em branco, a lista será esvaziada. 
-                     // Se você quer manter as antigas, remova esta linha.
-                    atividadeExistente.setHabilidadesBncc(new ArrayList<>());
-                }
-            }
-
-            // Lógica para etapa educacional (CORRIGIDA)
-            if (atividadeDoForm.getEtapaEducacional() != null) {
-                atividadeExistente.setEtapaEducacional(atividadeDoForm.getEtapaEducacional());
-            }
-
-            // Lógica de imagem
-            if (atividadeDoForm.getImagem() != null && !atividadeDoForm.getImagem().isEmpty()) {
-                String urlImagem = servicoImagem.salvarImagem(atividadeDoForm.getImagem());
-                atividadeExistente.setUrlImagem(urlImagem);
-            }
-
-            atividadeRepository.save(atividadeExistente);
-        }
-
-        return "redirect:/admin";
-    }
-
-    @GetMapping("/apagar/{id}")
-    public String confirmarExclusao(@PathVariable Long id, Model model) {
-        Atividade atividade = atividadeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("ID de atividade inválido:" + id));
-        model.addAttribute("atividade", atividade);
-        return "admin/confirmar-exclusao";
-    }
-
-    @PostMapping("/apagar/{id}")
-    public String apagarAtividade(@PathVariable Long id) {
+    // Deletar
+    @GetMapping("/deletar/{id}")
+    public String deletar(@PathVariable Long id) {
         atividadeRepository.deleteById(id);
-        return "redirect:/admin";
+        return "redirect:/admin/atividades";
     }
 }

@@ -49,32 +49,30 @@ public class Atividade {
     @Transient
     private MultipartFile imagem;
 
-    // Novos campos transient para lidar com o formulário
+    // Campos auxiliares para exibir no formulário
     @Transient
     private String habilidadesComoString;
 
     @Transient
-    private String etapaComoString; // Adicionado para garantir que o valor não seja perdido
+    private String etapaComoString;
 
-    // Adicione os getters e setters para os novos campos
-    public String getHabilidadesComoString() {
-        return habilidadesComoString;
+    public void prepararParaEdicao() {
+        // Converte a lista para string no formulário
+        if (habilidadesBncc != null && !habilidadesBncc.isEmpty()) {
+            this.habilidadesComoString = String.join(", ", habilidadesBncc);
+        }
+        // Copia a etapa para o transient (evita null no select)
+        this.etapaComoString = this.etapaEducacional;
     }
 
-    public void setHabilidadesComoString(String habilidadesComoString) {
-        this.habilidadesComoString = habilidadesComoString;
-    }
-
-    public String getEtapaComoString() {
-        return etapaComoString;
-    }
-
-    public void setEtapaComoString(String etapaComoString) {
-        this.etapaComoString = etapaComoString;
-    }
-
-    public Atividade(String nome, String descricao) {
-        this.nome = nome;
-        this.descricao = descricao;
+    public void atualizarAPartirDoFormulario() {
+        // Atualiza lista de habilidades a partir da string do form
+        if (habilidadesComoString != null && !habilidadesComoString.isBlank()) {
+            this.habilidadesBncc = List.of(habilidadesComoString.split("\\s*,\\s*"));
+        }
+        // Atualiza etapa
+        if (etapaComoString != null && !etapaComoString.isBlank()) {
+            this.etapaEducacional = etapaComoString;
+        }
     }
 }
