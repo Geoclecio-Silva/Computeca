@@ -13,7 +13,7 @@
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item"><strong>Categoria:</strong> <span th:text="${atividade.categoria}"></span></li>
-                        <li class="list-group-item"><strong>Etapa:</strong><span th:text="${atividade.etapaEducacional}"th:class="|etapa-${#strings.replace(#strings.toLowerCase(atividade.etapaEducacional), ' ', '-')}|"></span></li>
+                        <li class="list-group-item"><strong>Etapa:</strong> <span th:text="${atividade.etapaEducacional}"th:class="|etapa-${#strings.replace(#strings.toLowerCase(atividade.etapaEducacional), ' ', '-')}|"></span></li>
                         <li class="list-group-item">
                         <li class="list-group-item">
                         <strong>Habilidades BNCC:</strong>
