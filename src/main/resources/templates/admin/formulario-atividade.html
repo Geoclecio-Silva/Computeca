@@ -53,7 +53,7 @@
                     <option th:each="hab : ${habilidadesDisponiveis}" 
                             th:value="${hab.codigo}" 
                             th:text="${hab.descricao}"
-                            th:selected="${atividade.habilidadesBncc != null and atividade.habilidadesBncc.contains(hab.codigo)}">
+                            th:selected="${not #lists.isEmpty(atividade.habilidadesBncc) and atividade.habilidadesBncc.contains(hab.codigo)}"
                     </option>
                 </select>
                 <small class="form-text text-muted">Segure Ctrl (Cmd no Mac) para selecionar múltiplas habilidades</small>
