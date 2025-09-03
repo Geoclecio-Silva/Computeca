@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -13,6 +14,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
@@ -40,7 +42,10 @@ public class Atividade {
 
     private String etapaEducacional;
 
+   
     @ElementCollection
+    @CollectionTable(name = "atividade_habilidades_bncc", joinColumns = @JoinColumn(name = "atividade_id"))
+    @Column(name = "habilidade_bncc")
     private List<String> habilidadesBncc = new ArrayList<>();
 
     private String link;
