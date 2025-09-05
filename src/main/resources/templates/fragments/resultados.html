@@ -17,7 +17,8 @@
                         <li class="list-group-item">
                             <strong>Habilidades BNCC:</strong>
                             <span th:each="habilidade, iterStat : ${atividade.habilidadesBncc}">
-                                <span th:text="${habilidade.codigoHabilidade} + ' - ' + ${habilidade.descricao}"></span>
+                                <!-- CORREÇÃO AQUI --> 
+                                <span th:text="${habilidade.codigoHabilidade + ' - ' + habilidade.descricao}"></span>
                                 <span th:if="${!iterStat.last}">, </span>
                             </span>
                         </li>
