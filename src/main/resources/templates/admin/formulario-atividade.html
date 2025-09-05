@@ -11,38 +11,39 @@
         <h2 class="mb-4" th:text="${atividade.id == null ? 'Cadastrar Nova Atividade' : 'Editar Atividade'}"></h2>
 
         <form th:action="${atividade.id == null} ? @{/admin/cadastro} : @{/admin/editar/{id}(id=${atividade.id})}"
-              th:object="${atividade}" method="post" enctype="multipart/form-data">
+              method="post" enctype="multipart/form-data">
 
-            <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:name="id" th:value="${atividade.id}">
 
             <!-- Nome -->
             <div class="mb-3">
                 <label for="nome" class="form-label">Nome</label>
-                <input type="text" id="nome" th:field="*{nome}" class="form-control">
+                <input type="text" id="nome" name="nome" th:value="${atividade.nome}" class="form-control">
             </div>
 
             <!-- Descrição -->
             <div class="mb-3">
                 <label for="descricao" class="form-label">Descrição</label>
-                <textarea id="descricao" th:field="*{descricao}" class="form-control" rows="4"></textarea>
+                <textarea id="descricao" name="descricao" class="form-control" rows="4" th:text="${atividade.descricao}"></textarea>
             </div>
 
             <!-- Categoria -->
             <div class="mb-3">
                 <label for="categoria" class="form-label">Categoria:</label>
-                <select id="categoria" th:field="*{categoria}" class="form-select">
+                <select id="categoria" name="categoria" class="form-select">
                     <option value="">Selecione a Categoria</option>
                     <option th:each="categoria : ${T(com.computeca.bncc.model.Categoria).values()}"
                             th:value="${categoria}"
-                            th:text="${#strings.replace(categoria.name(), '_', ' ')}">
+                            th:text="${#strings.replace(categoria.name(), '_', ' ')}"
+                            th:selected="${atividade.categoria == categoria}">
                     </option>
                 </select>
             </div>
 
             <!-- Etapa Educacional -->
             <div class="mb-3">
-                <label for="etapaEducacional" class="form-label">Etapa Educacional</label>
-                <select class="form-select" th:field="*{etapaComoString}">
+                <label for="etapaComoString" class="form-label">Etapa Educacional</label>
+                <select id="etapaComoString" name="etapaComoString" class="form-select">
                     <option value="">Selecione a etapa educacional</option>
                     <option value="Educação Infantil" th:selected="${atividade.etapaComoString == 'Educação Infantil'}">Educação Infantil</option>
                     <option value="Ensino Fundamental I" th:selected="${atividade.etapaComoString == 'Ensino Fundamental I'}">Ensino Fundamental I</option>
@@ -51,23 +52,36 @@
                 </select>
             </div>
 
-            <!-- Habilidades BNCC (select múltiplo) - CORRIGIDO -->
+            <!-- Habilidades BNCC Agrupadas por Etapa -->
             <div class="mb-3">
-                <label for="habilidadesIds" class="form-label">Habilidades BNCC</label>
-                <select id="habilidadesIds" name="habilidadesIds" class="form-select" multiple>
-                    <option th:each="hab : ${habilidadesDisponiveis}" 
-                            th:value="${hab.id}" 
-                            th:text="${hab.codigoHabilidade} + ' - ' + ${hab.descricao}"
-                            th:selected="${atividade.habilidadesBncc != null && atividade.habilidadesBncc.contains(hab)}">
-                    </option>
-                </select>
-                <small class="form-text text-muted">Segure Ctrl (Cmd no Mac) para selecionar múltiplas habilidades</small>
+                <label class="form-label">Habilidades BNCC</label>
+                
+                <div th:each="entry : ${habilidadesPorEtapa}" class="card mb-3">
+                    <div class="card-header">
+                        <h6 class="mb-0" th:text="${entry.key}">Etapa Educacional</h6>
+                    </div>
+                    <div class="card-body">
+                        <div th:each="hab : ${entry.value}" class="form-check">
+                            <input class="form-check-input" type="checkbox" 
+                                   th:id="'hab_' + ${hab.id}"
+                                   th:name="habilidadesIds" 
+                                   th:value="${hab.id}"
+                                   th:checked="${atividade.habilidadesBncc != null && atividade.habilidadesBncc.contains(hab)}">
+                            <label class="form-check-label" th:for="'hab_' + ${hab.id}">
+                                <strong th:text="${hab.codigoHabilidade}"></strong> - 
+                                <span th:text="${hab.descricao}"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <small class="form-text text-muted">Selecione uma ou mais habilidades</small>
             </div>
 
             <!-- Link -->
             <div class="mb-3">
                 <label for="link" class="form-label">Link da Atividade</label>
-                <input type="url" id="link" th:field="*{link}" class="form-control">
+                <input type="url" id="link" name="link" th:value="${atividade.link}" class="form-control">
             </div>
 
             <!-- Imagem -->

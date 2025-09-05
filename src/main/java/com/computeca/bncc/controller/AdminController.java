@@ -3,6 +3,7 @@ package com.computeca.bncc.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
@@ -49,11 +50,17 @@ public class AdminController {
     public String exibirFormularioCadastro(Model model) {
         Atividade atividade = new Atividade();
         model.addAttribute("atividade", atividade);
-        model.addAttribute("habilidadesDisponiveis", habilidadeRepository.findAll());
+        
+        // CORREÇÃO: Agrupar habilidades por etapa
+        List<Habilidade> todasHabilidades = habilidadeRepository.findAll();
+        Map<String, List<Habilidade>> habilidadesPorEtapa = todasHabilidades.stream()
+            .collect(Collectors.groupingBy(Habilidade::getEtapaEducacional));
+        
+        model.addAttribute("habilidadesPorEtapa", habilidadesPorEtapa);
         return "admin/formulario-atividade";
     }
 
-    // Salvar nova atividade
+    // Salvar nova atividade (ESTÁ CORRETO)
     @PostMapping("/cadastro")
     public String cadastrarAtividade(@ModelAttribute Atividade atividade,
                                      @RequestParam(value = "habilidadesIds", required = false) List<Long> habilidadesIds) throws IOException {
@@ -84,24 +91,21 @@ public class AdminController {
         Atividade atividade = atividadeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID de atividade inválido: " + id));
 
-        // Preenche campos transients para o formulário
+        // CORREÇÃO: Removido código desnecessário de conversão para string
         atividade.setEtapaComoString(atividade.getEtapaEducacional());
-        
-        // Prepara habilidades para edição (converte objetos Habilidade em string de IDs)
-        if (atividade.getHabilidadesBncc() != null && !atividade.getHabilidadesBncc().isEmpty()) {
-            String habilidadesIds = atividade.getHabilidadesBncc().stream()
-                .map(h -> h.getId().toString())
-                .collect(Collectors.joining(","));
-            atividade.setHabilidadesComoString(habilidadesIds);
-        }
 
+        // CORREÇÃO: Agrupar habilidades por etapa
+        List<Habilidade> todasHabilidades = habilidadeRepository.findAll();
+        Map<String, List<Habilidade>> habilidadesPorEtapa = todasHabilidades.stream()
+            .collect(Collectors.groupingBy(Habilidade::getEtapaEducacional));
+        
         model.addAttribute("atividade", atividade);
-        model.addAttribute("habilidadesDisponiveis", habilidadeRepository.findAll());
+        model.addAttribute("habilidadesPorEtapa", habilidadesPorEtapa);
 
         return "admin/formulario-atividade";
     }
 
-    // Salvar edição
+    // Salvar edição (ESTÁ CORRETO)
     @PostMapping("/editar/{id}")
     public String editarAtividade(@PathVariable Long id,
                                   @ModelAttribute Atividade atividade,
