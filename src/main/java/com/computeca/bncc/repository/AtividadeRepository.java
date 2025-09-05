@@ -23,12 +23,12 @@ public interface AtividadeRepository extends JpaRepository<Atividade, Long> {
                     "(:nome is null or a.nome LIKE CONCAT('%', :nome, '%')) and " +
                     "(:categoria is null or a.categoria = :categoria) and " +
                     "(:etapa is null or a.etapaEducacional = :etapa) and " +
-                    "(:habilidade is null or :habilidade = '' or h LIKE CONCAT('%', :habilidade, '%'))",
+                    "(:habilidade is null or :habilidade = '' or h.descricao LIKE CONCAT('%', :habilidade, '%') or h.codigoHabilidade LIKE CONCAT('%', :habilidade, '%'))",
            countQuery = "SELECT COUNT(DISTINCT a) FROM Atividade a LEFT JOIN a.habilidadesBncc h WHERE " +
                          "(:nome is null or a.nome LIKE CONCAT('%', :nome, '%')) and " +
                          "(:categoria is null or a.categoria = :categoria) and " +
                          "(:etapa is null or a.etapaEducacional = :etapa) and " +
-                         "(:habilidade is null or :habilidade = '' or h LIKE CONCAT('%', :habilidade, '%'))"
+                         "(:habilidade is null or :habilidade = '' or h.descricao LIKE CONCAT('%', :habilidade, '%') or h.codigoHabilidade LIKE CONCAT('%', :habilidade, '%'))"
     )
     Page<Atividade> buscarComFiltros(
         @Param("nome") String nome,
