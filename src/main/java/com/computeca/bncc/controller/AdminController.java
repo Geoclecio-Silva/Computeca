@@ -1,7 +1,9 @@
 package com.computeca.bncc.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.computeca.bncc.model.Atividade;
+import com.computeca.bncc.model.Habilidade;
 import com.computeca.bncc.repository.AtividadeRepository;
 import com.computeca.bncc.repository.HabilidadeRepository;
 import com.computeca.bncc.service.ServicoImagem;
@@ -53,9 +56,14 @@ public class AdminController {
     // Salvar nova atividade
     @PostMapping("/cadastro")
     public String cadastrarAtividade(@ModelAttribute Atividade atividade,
-                                     @RequestParam(value = "habilidades", required = false) List<String> habilidades) throws IOException {
-        if (habilidades != null) {
+                                     @RequestParam(value = "habilidadesIds", required = false) List<Long> habilidadesIds) throws IOException {
+        
+        // Converter IDs em objetos Habilidade
+        if (habilidadesIds != null && !habilidadesIds.isEmpty()) {
+            List<Habilidade> habilidades = habilidadeRepository.findAllById(habilidadesIds);
             atividade.setHabilidadesBncc(habilidades);
+        } else {
+            atividade.setHabilidadesBncc(new ArrayList<>());
         }
 
         atividade.setEtapaEducacional(atividade.getEtapaComoString());
@@ -78,10 +86,16 @@ public class AdminController {
 
         // Preenche campos transients para o formulário
         atividade.setEtapaComoString(atividade.getEtapaEducacional());
+        
+        // Prepara habilidades para edição (converte objetos Habilidade em string de IDs)
+        if (atividade.getHabilidadesBncc() != null && !atividade.getHabilidadesBncc().isEmpty()) {
+            String habilidadesIds = atividade.getHabilidadesBncc().stream()
+                .map(h -> h.getId().toString())
+                .collect(Collectors.joining(","));
+            atividade.setHabilidadesComoString(habilidadesIds);
+        }
 
         model.addAttribute("atividade", atividade);
-
-        // Lista de habilidades disponíveis
         model.addAttribute("habilidadesDisponiveis", habilidadeRepository.findAll());
 
         return "admin/formulario-atividade";
@@ -91,7 +105,7 @@ public class AdminController {
     @PostMapping("/editar/{id}")
     public String editarAtividade(@PathVariable Long id,
                                   @ModelAttribute Atividade atividade,
-                                  @RequestParam(value = "habilidades", required = false) List<String> habilidades) throws IOException {
+                                  @RequestParam(value = "habilidadesIds", required = false) List<Long> habilidadesIds) throws IOException {
         Atividade existente = atividadeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID de atividade inválido: " + id));
 
@@ -101,8 +115,12 @@ public class AdminController {
         existente.setLink(atividade.getLink());
         existente.setEtapaEducacional(atividade.getEtapaComoString());
 
-        if (habilidades != null) {
+        // Converter IDs em objetos Habilidade
+        if (habilidadesIds != null && !habilidadesIds.isEmpty()) {
+            List<Habilidade> habilidades = habilidadeRepository.findAllById(habilidadesIds);
             existente.setHabilidadesBncc(habilidades);
+        } else {
+            existente.setHabilidadesBncc(new ArrayList<>());
         }
 
         MultipartFile imagem = atividade.getImagem();
@@ -130,7 +148,4 @@ public class AdminController {
         atividadeRepository.deleteById(id);
         return "redirect:/admin";
     }
-
-    
-
 }

@@ -15,16 +15,19 @@
 
             <input type="hidden" th:field="*{id}">
 
+            <!-- Nome -->
             <div class="mb-3">
                 <label for="nome" class="form-label">Nome</label>
                 <input type="text" id="nome" th:field="*{nome}" class="form-control">
             </div>
 
+            <!-- Descrição -->
             <div class="mb-3">
                 <label for="descricao" class="form-label">Descrição</label>
                 <textarea id="descricao" th:field="*{descricao}" class="form-control" rows="4"></textarea>
             </div>
 
+            <!-- Categoria -->
             <div class="mb-3">
                 <label for="categoria" class="form-label">Categoria:</label>
                 <select id="categoria" th:field="*{categoria}" class="form-select">
@@ -36,6 +39,7 @@
                 </select>
             </div>
 
+            <!-- Etapa Educacional -->
             <div class="mb-3">
                 <label for="etapaEducacional" class="form-label">Etapa Educacional</label>
                 <select class="form-select" th:field="*{etapaComoString}">
@@ -47,28 +51,32 @@
                 </select>
             </div>
 
+            <!-- Habilidades BNCC (select múltiplo) -->
             <div class="mb-3">
                 <label for="habilidades" class="form-label">Habilidades</label>
                 <select id="habilidades" name="habilidades" class="form-select" multiple>
                     <option th:each="hab : ${habilidadesDisponiveis}" 
-                            th:value="${hab.codigo}" 
+                            th:value="${hab.descricao}" 
                             th:text="${hab.descricao}"
-                            th:selected="${not #lists.isEmpty(atividade.habilidadesBncc) and atividade.habilidadesBncc.contains(hab.codigo)}"
+                            th:selected="${atividade.habilidadesBncc.contains(hab.descricao)}">
                     </option>
                 </select>
                 <small class="form-text text-muted">Segure Ctrl (Cmd no Mac) para selecionar múltiplas habilidades</small>
             </div>
 
+            <!-- Link -->
             <div class="mb-3">
                 <label for="link" class="form-label">Link da Atividade</label>
                 <input type="url" id="link" th:field="*{link}" class="form-control">
             </div>
 
+            <!-- Imagem -->
             <div class="mb-3">
                 <label for="imagem" class="form-label">Imagem do Banner</label>
                 <input type="file" id="imagem" name="imagem" class="form-control">
             </div>
-            
+
+            <!-- Botões -->
             <div class="d-flex justify-content-between mt-4">
                 <a th:href="@{/admin}" class="btn btn-secondary">Voltar</a>
                 <button type="submit" class="btn btn-primary">Salvar Atividade</button>

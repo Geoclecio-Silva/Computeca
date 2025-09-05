@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
-
 @Entity
 @Table(name = "habilidades")
 public class Habilidade {
@@ -30,11 +29,10 @@ public class Habilidade {
     public Habilidade() {}
 
     public Habilidade(String etapaEducacional, String codigoHabilidade, String descricao) {
-    this.etapaEducacional = etapaEducacional;
-    this.codigoHabilidade = codigoHabilidade;
-    this.descricao = descricao;
-}
-
+        this.etapaEducacional = etapaEducacional;
+        this.codigoHabilidade = codigoHabilidade;
+        this.descricao = descricao;
+    }
 
     // Getters e Setters
     public Long getId() {
@@ -67,5 +65,11 @@ public class Habilidade {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+   
+    @Override
+    public String toString() {
+        return codigoHabilidade + " - " + descricao;
     }
 }
