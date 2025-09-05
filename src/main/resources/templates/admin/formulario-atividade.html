@@ -51,14 +51,14 @@
                 </select>
             </div>
 
-            <!-- Habilidades BNCC (select múltiplo) -->
+            <!-- Habilidades BNCC (select múltiplo) - CORRIGIDO -->
             <div class="mb-3">
-                <label for="habilidades" class="form-label">Habilidades</label>
-                <select id="habilidades" name="habilidades" class="form-select" multiple>
+                <label for="habilidadesIds" class="form-label">Habilidades BNCC</label>
+                <select id="habilidadesIds" name="habilidadesIds" class="form-select" multiple>
                     <option th:each="hab : ${habilidadesDisponiveis}" 
-                            th:value="${hab.descricao}" 
-                            th:text="${hab.descricao}"
-                            th:selected="${atividade.habilidadesBncc.contains(hab.descricao)}">
+                            th:value="${hab.id}" 
+                            th:text="${hab.codigoHabilidade} + ' - ' + ${hab.descricao}"
+                            th:selected="${atividade.habilidadesBncc != null && atividade.habilidadesBncc.contains(hab)}">
                     </option>
                 </select>
                 <small class="form-text text-muted">Segure Ctrl (Cmd no Mac) para selecionar múltiplas habilidades</small>
