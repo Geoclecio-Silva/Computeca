@@ -54,7 +54,7 @@
                         <optgroup th:label="${etapaEntry.key}">
                             <option th:each="hab : ${etapaEntry.value}"
                                     th:value="${hab.id}"
-                                    th:text="${hab.codigo + ' - ' + hab.descricao}"
+                                    th:text="${hab.codigoHabilidade + ' - ' + hab.descricao}"
                                     th:selected="${atividade.habilidadesBncc != null and atividade.habilidadesBncc.contains(hab)}">
                             </option>
                         </optgroup>
