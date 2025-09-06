@@ -11,39 +11,34 @@
         <h2 class="mb-4" th:text="${atividade.id == null ? 'Cadastrar Nova Atividade' : 'Editar Atividade'}"></h2>
 
         <form th:action="${atividade.id == null} ? @{/admin/cadastro} : @{/admin/editar/{id}(id=${atividade.id})}"
-              method="post" enctype="multipart/form-data">
+              th:object="${atividade}" method="post" enctype="multipart/form-data">
 
-            <input type="hidden" th:name="id" th:value="${atividade.id}">
+            <input type="hidden" th:field="*{id}">
 
-            <!-- Nome -->
             <div class="mb-3">
                 <label for="nome" class="form-label">Nome</label>
-                <input type="text" id="nome" name="nome" th:value="${atividade.nome}" class="form-control">
+                <input type="text" id="nome" th:field="*{nome}" class="form-control">
             </div>
 
-            <!-- Descrição -->
             <div class="mb-3">
                 <label for="descricao" class="form-label">Descrição</label>
-                <textarea id="descricao" name="descricao" class="form-control" rows="4" th:text="${atividade.descricao}"></textarea>
+                <textarea id="descricao" th:field="*{descricao}" class="form-control" rows="4"></textarea>
             </div>
 
-            <!-- Categoria -->
             <div class="mb-3">
                 <label for="categoria" class="form-label">Categoria:</label>
-                <select id="categoria" name="categoria" class="form-select">
+                <select id="categoria" th:field="*{categoria}" class="form-select">
                     <option value="">Selecione a Categoria</option>
                     <option th:each="categoria : ${T(com.computeca.bncc.model.Categoria).values()}"
                             th:value="${categoria}"
-                            th:text="${#strings.replace(categoria.name(), '_', ' ')}"
-                            th:selected="${atividade.categoria == categoria}">
+                            th:text="${#strings.replace(categoria.name(), '_', ' ')}">
                     </option>
                 </select>
             </div>
 
-            <!-- Etapa Educacional -->
             <div class="mb-3">
-                <label for="etapaComoString" class="form-label">Etapa Educacional</label>
-                <select id="etapaComoString" name="etapaComoString" class="form-select">
+                <label for="etapaEducacional" class="form-label">Etapa Educacional</label>
+                <select class="form-select" th:field="*{etapaComoString}">
                     <option value="">Selecione a etapa educacional</option>
                     <option value="Educação Infantil" th:selected="${atividade.etapaComoString == 'Educação Infantil'}">Educação Infantil</option>
                     <option value="Ensino Fundamental I" th:selected="${atividade.etapaComoString == 'Ensino Fundamental I'}">Ensino Fundamental I</option>
@@ -52,37 +47,29 @@
                 </select>
             </div>
 
-            <!-- Habilidades BNCC - SELECT MÚLTIPLO ESTILO DROPDOWN -->
+            <!-- CORREÇÕES APENAS AQUI -->
             <div class="mb-3">
-                <label for="habilidadesIds" class="form-label">Habilidades BNCC</label>
+                <label for="habilidadesIds" class="form-label">Habilidades</label>
                 <select id="habilidadesIds" name="habilidadesIds" class="form-select" multiple>
-                    <option value="">Selecione as habilidades (use Ctrl para múltipla seleção)</option>
-                    <th:block th:each="entry : ${habilidadesPorEtapa}">
-                        <optgroup th:label="${entry.key}">
-                            <option th:each="hab : ${entry.value}" 
-                                    th:value="${hab.id}"
-                                    th:text="${hab.codigoHabilidade} + ' - ' + ${hab.descricao}"
-                                    th:selected="${atividade.habilidadesBncc != null && atividade.habilidadesBncc.contains(hab)}">
-                            </option>
-                        </optgroup>
-                    </th:block>
+                    <option th:each="hab : ${habilidadesDisponiveis}"
+                            th:value="${hab.id}"
+                            th:text="${hab.descricao}"
+                            th:selected="${atividade.habilidadesBncc != null and atividade.habilidadesBncc.contains(hab)}">
+                    </option>
                 </select>
                 <small class="form-text text-muted">Segure Ctrl (Cmd no Mac) para selecionar múltiplas habilidades</small>
             </div>
 
-            <!-- Link -->
             <div class="mb-3">
                 <label for="link" class="form-label">Link da Atividade</label>
-                <input type="url" id="link" name="link" th:value="${atividade.link}" class="form-control">
+                <input type="url" id="link" th:field="*{link}" class="form-control">
             </div>
 
-            <!-- Imagem -->
             <div class="mb-3">
                 <label for="imagem" class="form-label">Imagem do Banner</label>
                 <input type="file" id="imagem" name="imagem" class="form-control">
             </div>
-
-            <!-- Botões -->
+           
             <div class="d-flex justify-content-between mt-4">
                 <a th:href="@{/admin}" class="btn btn-secondary">Voltar</a>
                 <button type="submit" class="btn btn-primary">Salvar Atividade</button>
