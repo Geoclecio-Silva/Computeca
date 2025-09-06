@@ -48,19 +48,17 @@
             </div>
 
             <div class="mb-3">
-                <label for="habilidadesIds" class="form-label">Habilidades</label>
-                <select id="habilidadesIds" name="habilidadesIds" class="form-select" multiple>
-                    <th:block th:each="etapaEntry : ${habilidadesPorEtapa}">
-                        <optgroup th:label="${etapaEntry.key}">
-                            <option th:each="hab : ${etapaEntry.value}"
-                                    th:value="${hab.id}"
-                                    th:text="${hab.codigoHabilidade + ' - ' + hab.descricao}"
-                                    th:selected="${atividade.habilidadesBncc != null and atividade.habilidadesBncc.contains(hab)}">
-                            </option>
-                        </optgroup>
+                <label for="habilidades" class="form-label">Habilidades</label>
+                <select id="habilidades" name="habilidadesIds" class="form-select" multiple="multiple">
+                    <th:block th:if="${atividade.habilidadesBncc != null and !atividade.habilidadesBncc.isEmpty()}">
+                        <option th:each="hab : ${atividade.habilidadesBncc}"
+                                th:value="${hab.id}"
+                                th:text="${hab.codigoHabilidade + ' - ' + hab.etapaEducacional}"
+                                th:selected="true">
+                        </option>
                     </th:block>
                 </select>
-                <small class="form-text text-muted">Segure Ctrl (Cmd no Mac) para selecionar múltiplas habilidades</small>
+                <small class="form-text text-muted">Digite para buscar e selecione as habilidades. O código e a etapa educacional são exibidos no menu suspenso e a descrição completa aparece ao passar o mouse.</small>
             </div>
 
             <div class="mb-3">
