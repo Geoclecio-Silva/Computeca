@@ -47,15 +47,18 @@
                 </select>
             </div>
 
-            <!-- CORREÇÕES APENAS AQUI -->
             <div class="mb-3">
                 <label for="habilidadesIds" class="form-label">Habilidades</label>
                 <select id="habilidadesIds" name="habilidadesIds" class="form-select" multiple>
-                    <option th:each="hab : ${habilidadesDisponiveis}"
-                            th:value="${hab.id}"
-                            th:text="${hab.descricao}"
-                            th:selected="${atividade.habilidadesBncc != null and atividade.habilidadesBncc.contains(hab)}">
-                    </option>
+                    <th:block th:each="etapaEntry : ${habilidadesPorEtapa}">
+                        <optgroup th:label="${etapaEntry.key}">
+                            <option th:each="hab : ${etapaEntry.value}"
+                                    th:value="${hab.id}"
+                                    th:text="${hab.codigo + ' - ' + hab.descricao}"
+                                    th:selected="${atividade.habilidadesBncc != null and atividade.habilidadesBncc.contains(hab)}">
+                            </option>
+                        </optgroup>
+                    </th:block>
                 </select>
                 <small class="form-text text-muted">Segure Ctrl (Cmd no Mac) para selecionar múltiplas habilidades</small>
             </div>
@@ -69,7 +72,7 @@
                 <label for="imagem" class="form-label">Imagem do Banner</label>
                 <input type="file" id="imagem" name="imagem" class="form-control">
             </div>
-           
+            
             <div class="d-flex justify-content-between mt-4">
                 <a th:href="@{/admin}" class="btn btn-secondary">Voltar</a>
                 <button type="submit" class="btn btn-primary">Salvar Atividade</button>

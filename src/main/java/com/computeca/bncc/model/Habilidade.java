@@ -1,12 +1,14 @@
 package com.computeca.bncc.model;
 
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank; // Importar a classe Objects
 
 @Entity
 @Table(name = "habilidades")
@@ -67,9 +69,22 @@ public class Habilidade {
         this.descricao = descricao;
     }
 
-   
     @Override
     public String toString() {
         return codigoHabilidade + " - " + descricao;
+    }
+
+    // Implementação dos métodos equals e hashCode
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Habilidade that = (Habilidade) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
