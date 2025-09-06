@@ -52,30 +52,22 @@
                 </select>
             </div>
 
-            <!-- Habilidades BNCC Agrupadas por Etapa -->
+            <!-- Habilidades BNCC - SELECT MÚLTIPLO ESTILO DROPDOWN -->
             <div class="mb-3">
-                <label class="form-label">Habilidades BNCC</label>
-                
-                <div th:each="entry : ${habilidadesPorEtapa}" class="card mb-3">
-                    <div class="card-header">
-                        <h6 class="mb-0" th:text="${entry.key}">Etapa Educacional</h6>
-                    </div>
-                    <div class="card-body">
-                        <div th:each="hab : ${entry.value}" class="form-check">
-                            <input class="form-check-input" type="checkbox" 
-                                   th:id="'hab_' + ${hab.id}"
-                                   th:name="habilidadesIds" 
-                                   th:value="${hab.id}"
-                                   th:checked="${atividade.habilidadesBncc != null && atividade.habilidadesBncc.contains(hab)}">
-                            <label class="form-check-label" th:for="'hab_' + ${hab.id}">
-                                <strong th:text="${hab.codigoHabilidade}"></strong> - 
-                                <span th:text="${hab.descricao}"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                
-                <small class="form-text text-muted">Selecione uma ou mais habilidades</small>
+                <label for="habilidadesIds" class="form-label">Habilidades BNCC</label>
+                <select id="habilidadesIds" name="habilidadesIds" class="form-select" multiple>
+                    <option value="">Selecione as habilidades (use Ctrl para múltipla seleção)</option>
+                    <th:block th:each="entry : ${habilidadesPorEtapa}">
+                        <optgroup th:label="${entry.key}">
+                            <option th:each="hab : ${entry.value}" 
+                                    th:value="${hab.id}"
+                                    th:text="${hab.codigoHabilidade} + ' - ' + ${hab.descricao}"
+                                    th:selected="${atividade.habilidadesBncc != null && atividade.habilidadesBncc.contains(hab)}">
+                            </option>
+                        </optgroup>
+                    </th:block>
+                </select>
+                <small class="form-text text-muted">Segure Ctrl (Cmd no Mac) para selecionar múltiplas habilidades</small>
             </div>
 
             <!-- Link -->
