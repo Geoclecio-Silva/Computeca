@@ -4,18 +4,25 @@
 <body>
 
     <div th:fragment="resultados">
+
+        <!-- Verifica se existem atividades -->
         <div th:if="${not #lists.isEmpty(atividades)}" id="conteudo-atividades"
             class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
 
+            <!-- Loop pelas atividades -->
             <div class="col" th:each="atividade : ${atividades}">
                 <div class="card h-100">
+
+                    <!-- Imagem do banner -->
                     <img th:src="${atividade.urlImagem}" class="card-img-top" alt="Banner da Atividade">
 
+                    <!-- Corpo do card -->
                     <div class="card-body">
                         <h5 class="card-title" th:text="${atividade.nome}"></h5>
                         <p class="card-text" th:text="${atividade.descricao}"></p>
                     </div>
 
+                    <!-- Lista de detalhes -->
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
                             <strong>Categoria:</strong>
@@ -23,32 +30,41 @@
                         </li>
                         <li class="list-group-item">
                             <strong>Etapa:</strong>
-                            <span th:text="${atividade.etapaEducacional}"></span>
+                            <span th:text="${atividade.etapaEducacional}"
+                                  th:classappend="|etapa-${#strings.replace(#strings.toLowerCase(atividade.etapaEducacional), ' ', '-') }|">
+                            </span>
                         </li>
                         <li class="list-group-item">
                             <strong>Habilidades BNCC:</strong>
                             <div class="habilidades-container">
-                                <span th:each="habilidade : ${atividade.habilidadesBncc}" class="habilidade-tag"
-                                    th:classappend="${habilidade.etapaClasse}" th:text="${habilidade.codigoHabilidade}"
-                                    th:title="${habilidade.descricao}">
+                                <span th:each="habilidade : ${atividade.habilidadesBncc}"
+                                      class="habilidade-tag"
+                                      th:classappend="|etapa-${#strings.replace(#strings.toLowerCase(habilidade.etapaEducacional), ' ', '-') }|"
+                                      th:text="${habilidade.codigoHabilidade}"
+                                      th:title="${habilidade.descricao}">
                                 </span>
                             </div>
                         </li>
                     </ul>
 
+                    <!-- Rodapé com link -->
                     <div class="card-footer">
-                        <a th:href="${atividade.link}" class="btn btn-primary" target="_blank">Acessar Atividade</a>
+                        <a th:href="${atividade.link}" class="btn btn-primary" target="_blank">
+                            Acessar Atividade
+                        </a>
                     </div>
+
                 </div>
             </div>
+
         </div>
 
+        <!-- Mensagem caso não existam atividades -->
         <div th:if="${#lists.isEmpty(atividades)}" class="text-center mt-5">
             <p>Nenhuma atividade encontrada com os filtros aplicados.</p>
         </div>
+
     </div>
 
-
 </body>
-
 </html>
