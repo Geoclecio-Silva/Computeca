@@ -26,17 +26,16 @@
                             <strong>Etapa:</strong>
                             <!-- Classe aplicada dinamicamente de acordo com o nome da etapa -->
                             <span th:text="${atividade.etapaEducacional}"
-                                  th:classappend="|etapa-${#strings.replace(#strings.toLowerCase(atividade.etapaEducacional), ' ', '-')}|">
+                                th:classappend="|etapa-${#strings.replace(#strings.toLowerCase(atividade.etapaEducacional), ' ', '-')}|">
                             </span>
                         </li>
                         <li class="list-group-item">
                             <strong>Habilidades BNCC:</strong>
                             <div class="habilidades-container">
-                                <span th:each="habilidade : ${atividade.habilidadesBncc}" 
-                                      class="habilidade-tag"
-                                      th:classappend="|etapa-${#strings.replace(#strings.toLowerCase(habilidade.etapaEducacional), ' ', '-') }|"
-                                      th:text="${habilidade.codigoHabilidade}"
-                                      th:title="${habilidade.descricao}">
+                                <span th:each="habilidade : ${atividade.habilidadesBncc}" class="habilidade-tag"
+                                    th:classappend="|etapa-${#strings.replace(#strings.toLowerCase(habilidade.getEtapaEducacional()), ' ', '-') }|"
+                                    th:text="${habilidade.getCodigoHabilidade()}"
+                                    th:title="${habilidade.getDescricao()}">
                                 </span>
                             </div>
                         </li>
