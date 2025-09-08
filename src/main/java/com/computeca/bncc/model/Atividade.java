@@ -45,11 +45,11 @@ public class Atividade {
     private String etapaEducacional;
 
     
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinTable(
-        name = "atividade_habilidades",
-        joinColumns = @JoinColumn(name = "atividade_id"),
-        inverseJoinColumns = @JoinColumn(name = "habilidade_id")
+    name = "atividade_habilidades",
+    joinColumns = @JoinColumn(name = "atividade_id"),
+    inverseJoinColumns = @JoinColumn(name = "habilidade_id")
     )
     private List<Habilidade> habilidadesBncc = new ArrayList<>();
 
