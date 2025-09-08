@@ -35,6 +35,7 @@ public class HabilidadeController {
             }
 
             habilidade.setEtapaClasse(classe);
+            System.out.println("Habilidade " + habilidade.getCodigoHabilidade() + " -> Etapa Classe: " + habilidade.getEtapaClasse());
         });
 
         return habilidades;
