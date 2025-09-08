@@ -33,9 +33,8 @@
                             <strong>Habilidades BNCC:</strong>
                             <div class="habilidades-container">
                                 <span th:each="habilidade : ${atividade.habilidadesBncc}" class="habilidade-tag"
-                                    th:classappend="|etapa-${#strings.replace(#strings.toLowerCase(habilidade.getEtapaEducacional()), ' ', '-') }|"
-                                    th:text="${habilidade.getCodigoHabilidade()}"
-                                    th:title="${habilidade.getDescricao()}">
+                                    th:classappend="${habilidade.etapaClasse}" th:text="${habilidade.codigoHabilidade}"
+                                    th:title="${habilidade.descricao}">
                                 </span>
                             </div>
                         </li>
