@@ -1,6 +1,7 @@
 package com.computeca.bncc.controller;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.computeca.bncc.model.Atividade;
 import com.computeca.bncc.model.Categoria;
+import com.computeca.bncc.model.Habilidade;
 import com.computeca.bncc.repository.AtividadeRepository;
 import com.computeca.bncc.util.ThymeleafUtil;
 
@@ -45,7 +47,18 @@ public class PaginaInicialController {
 
         Page<Atividade> atividadesPage = atividadeRepository.buscarComFiltros(nome, categoriaEnum, etapa, habilidade, pageable);
         
-        model.addAttribute("atividades", atividadesPage.getContent());
+        List<Atividade> atividades = atividadesPage.getContent();
+        
+        // NOVO CÓDIGO: Popula a classe de estilo para cada habilidade
+        for (Atividade atividade : atividades) {
+            if (atividade.getHabilidadesBncc() != null) {
+                for (Habilidade hab : atividade.getHabilidadesBncc()) {
+                    hab.popularEtapaClasse();
+                }
+            }
+        }
+        
+        model.addAttribute("atividades", atividades);
         
         model.addAttribute("categorias", Arrays.asList(Categoria.values()));
         model.addAttribute("etapas", Arrays.asList("Educação Infantil", "Ensino Fundamental I", "Ensino Fundamental II", "Ensino Médio"));
@@ -79,7 +92,18 @@ public class PaginaInicialController {
 
         Page<Atividade> atividadesPage = atividadeRepository.buscarComFiltros(nome, categoriaEnum, etapa, habilidade, pageable);
 
-        model.addAttribute("atividades", atividadesPage.getContent());
+        List<Atividade> atividades = atividadesPage.getContent();
+
+        // NOVO CÓDIGO: Popula a classe de estilo para cada habilidade
+        for (Atividade atividade : atividades) {
+            if (atividade.getHabilidadesBncc() != null) {
+                for (Habilidade hab : atividade.getHabilidadesBncc()) {
+                    hab.popularEtapaClasse();
+                }
+            }
+        }
+
+        model.addAttribute("atividades", atividades);
         model.addAttribute("hasMore", atividadesPage.hasNext());
 
         return "fragments/resultados :: resultados";

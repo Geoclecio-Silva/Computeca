@@ -27,11 +27,21 @@ public class HabilidadeController {
             String classe;
 
             switch (etapa) {
-                case "Educação Infantil" -> classe = "etapa-educacao-infantil";
-                case "Ensino Fundamental I" -> classe = "etapa-ensino-fundamental-i";
-                case "Ensino Fundamental II" -> classe = "etapa-ensino-fundamental-ii";
-                case "Ensino Médio" -> classe = "etapa-ensino-medio"; // Remove o acento
-                default -> classe = "";
+                case "Educação Infantil":
+                    classe = "infantil";
+                    break;
+                case "Ensino Fundamental I":
+                    classe = "fundamental-i";
+                    break;
+                case "Ensino Fundamental II":
+                    classe = "fundamental-ii";
+                    break;
+                case "Ensino Médio":
+                    classe = "medio";
+                    break;
+                default:
+                    classe = "";
+                    break;
             }
 
             habilidade.setEtapaClasse(classe);
