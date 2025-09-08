@@ -39,6 +39,31 @@ public class Habilidade {
         this.etapaEducacional = etapaEducacional;
         this.codigoHabilidade = codigoHabilidade;
         this.descricao = descricao;
+        // Chamada ao novo método para popular a classe de estilo
+        popularEtapaClasse();
+    }
+
+    // NOVO CÓDIGO: Método para popular a classe CSS com base na etapa educacional
+    public void popularEtapaClasse() {
+        if (this.etapaEducacional != null) {
+            switch (this.etapaEducacional) {
+                case "Educação Infantil":
+                    this.etapaClasse = "infantil";
+                    break;
+                case "Ensino Fundamental I":
+                    this.etapaClasse = "fundamental-i";
+                    break;
+                case "Ensino Fundamental II":
+                    this.etapaClasse = "fundamental-ii";
+                    break;
+                case "Ensino Médio":
+                    this.etapaClasse = "medio";
+                    break;
+                default:
+                    this.etapaClasse = null;
+                    break;
+            }
+        }
     }
 
     // Getters e Setters

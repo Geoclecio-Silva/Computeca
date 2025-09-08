@@ -53,6 +53,10 @@ public class AdminController {
         
         // CORREÇÃO: Agrupar habilidades por etapa
         List<Habilidade> todasHabilidades = habilidadeRepository.findAll();
+        
+        // NOVO CÓDIGO: Popula a classe de estilo em cada objeto Habilidade
+        popularClassesEtapa(todasHabilidades);
+        
         Map<String, List<Habilidade>> habilidadesPorEtapa = todasHabilidades.stream()
             .collect(Collectors.groupingBy(Habilidade::getEtapaEducacional));
         
@@ -96,6 +100,10 @@ public class AdminController {
 
         // CORREÇÃO: Agrupar habilidades por etapa
         List<Habilidade> todasHabilidades = habilidadeRepository.findAll();
+        
+        // NOVO CÓDIGO: Popula a classe de estilo em cada objeto Habilidade
+        popularClassesEtapa(todasHabilidades);
+        
         Map<String, List<Habilidade>> habilidadesPorEtapa = todasHabilidades.stream()
             .collect(Collectors.groupingBy(Habilidade::getEtapaEducacional));
         
@@ -151,5 +159,31 @@ public class AdminController {
     public String apagarAtividade(@PathVariable Long id) {
         atividadeRepository.deleteById(id);
         return "redirect:/admin";
+    }
+    
+    // Método auxiliar para popular a classe CSS com base na etapa educacional
+    private void popularClassesEtapa(List<Habilidade> habilidades) {
+        for (Habilidade habilidade : habilidades) {
+            String etapa = habilidade.getEtapaEducacional();
+            if (etapa != null) {
+                switch (etapa) {
+                    case "Educação Infantil":
+                        habilidade.setEtapaClasse("infantil");
+                        break;
+                    case "Ensino Fundamental I":
+                        habilidade.setEtapaClasse("fundamental-i");
+                        break;
+                    case "Ensino Fundamental II":
+                        habilidade.setEtapaClasse("fundamental-ii");
+                        break;
+                    case "Ensino Médio":
+                        habilidade.setEtapaClasse("medio");
+                        break;
+                    default:
+                        habilidade.setEtapaClasse(null);
+                        break;
+                }
+            }
+        }
     }
 }
