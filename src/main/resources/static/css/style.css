@@ -155,55 +155,8 @@ body {
 }
 
 
-/* Estilos para as Etiquetas de Etapa */
-.etapa-educacao-infantil,
-.etapa-ensino-fundamental-i,
-.etapa-ensino-fundamental-ii,
-.etapa-ensino-medio {
-    display: inline-block;
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-weight: 600;
-}
+/* -------------------- Estilos de Cores para Etapas e Habilidades (Corrigido) -------------------- */
 
-.etapa-educacao-infantil {
-    background-color: #f2e3f5;
-    border: 1px solid #845EC2;
-    color: #845EC2;
-}
-
-.etapa-ensino-fundamental-i {
-    background-color: #f7e1ee;
-    border: 1px solid #D65DB1;
-    color: #D65DB1;
-}
-
-.etapa-ensino-fundamental-ii {
-    background-color: #fff4d9;
-    border: 1px solid #FFC75F;
-    color: #FFC75F;
-}
-
-.etapa-ensino-medio {
-    background-color: #e9ecef;
-    border: 1px solid #343A40;
-    color: #343A40;
-}
-
-/* Estilos para as Tags de Habilidades */
-.habilidade-tag {
-    display: inline-block;
-    padding: 3px 8px;
-    margin: 2px;
-    background-color: #f0f0f0; 
-    border: 1px solid #ccc; 
-    border-radius: 4px;
-    font-size: 0.85em;
-    font-weight: bold;
-    cursor: help;
-}
-
-/* Estilos para as Etiquetas de Etapa */
 .etapa-educacao-infantil,
 .etapa-ensino-fundamental-i,
 .etapa-ensino-fundamental-ii,
@@ -212,7 +165,7 @@ body {
     padding: 3px 8px !important;
     border-radius: 4px !important;
     font-weight: 600 !important;
-    white-space: nowrap !important; /* Evita quebras de linha */
+    white-space: nowrap !important;
 }
 
 .etapa-educacao-infantil {
@@ -239,7 +192,6 @@ body {
     color: #343A40 !important;
 }
 
-/* Estilos para as Tags de Habilidades */
 .habilidade-tag {
     display: inline-block !important;
     padding: 3px 8px !important;
@@ -248,10 +200,9 @@ body {
     font-size: 0.85em !important;
     font-weight: bold !important;
     cursor: help !important;
-    white-space: nowrap !important; /* Evita quebras de linha */
+    white-space: nowrap !important;
 }
 
-/* Classes para as cores das Habilidades, baseadas na Etapa Educacional */
 .habilidade-tag.etapa-educacao-infantil {
     background-color: #f2e3f5 !important;
     border: 1px solid #845EC2 !important;
