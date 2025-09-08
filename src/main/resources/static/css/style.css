@@ -154,7 +154,7 @@ body {
     margin-left: calc(-.5 * var(--bs-gutter-x));
 }
 
-/* -------------------- Estilos de Cores para Etapas e Habilidades -------------------- */
+/* -------------------- Estilos de Cores para Etapas e Habilidades (Refatorado) -------------------- */
 
 /* Estilos Genéricos de Tags */
 .habilidade-tag, .etapa-educacao-infantil, .etapa-ensino-fundamental-i, .etapa-ensino-fundamental-ii, .etapa-ensino-medio {
@@ -168,51 +168,26 @@ body {
     font-size: 0.85em !important;
 }
 
-/* Cores para a Etapa (Usando Seletor Direto) */
-.etapa-educacao-infantil {
+/* Regras de cor unificadas para a etapa e habilidades */
+.etapa-educacao-infantil, .infantil {
     background-color: #f2e3f5 !important;
     border: 1px solid #845EC2 !important;
     color: #845EC2 !important;
 }
 
-.etapa-ensino-fundamental-i {
+.etapa-ensino-fundamental-i, .fundamental-i {
     background-color: #f7e1ee !important;
     border: 1px solid #D65DB1 !important;
     color: #D65DB1 !important;
 }
 
-.etapa-ensino-fundamental-ii {
+.etapa-ensino-fundamental-ii, .fundamental-ii {
     background-color: #fff4d9 !important;
     border: 1px solid #FFC75F !important;
     color: #FFC75F !important;
 }
 
-.etapa-ensino-medio {
-    background-color: #e9ecef !important;
-    border: 1px solid #343A40 !important;
-    color: #343A40 !important;
-}
-
-/* Cores para as Habilidades (AGORA COMBINANDO COM AS CLASSES DO HTML) */
-.habilidade-tag.infantil {
-    background-color: #f2e3f5 !important;
-    border: 1px solid #845EC2 !important;
-    color: #845EC2 !important;
-}
-
-.habilidade-tag.fundamental-i {
-    background-color: #f7e1ee !important;
-    border: 1px solid #D65DB1 !important;
-    color: #D65DB1 !important;
-}
-
-.habilidade-tag.fundamental-ii {
-    background-color: #fff4d9 !important;
-    border: 1px solid #FFC75F !important;
-    color: #FFC75F !important;
-}
-
-.habilidade-tag.medio {
+.etapa-ensino-medio, .medio {
     background-color: #e9ecef !important;
     border: 1px solid #343A40 !important;
     color: #343A40 !important;
