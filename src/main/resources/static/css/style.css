@@ -13,37 +13,36 @@ body {
 
 /* -------------------- Navbar Único e Simples -------------------- */
 .navbar {
-    background-color: #fff; /* Fundo branco e limpo */
+    background-color: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-brand {
-    color: #845EC2 !important; /* Cor da sua paleta */
+    color: #845EC2 !important;
     font-weight: 600;
 }
 
 /* NOVO ESTILO PARA SEPARADORES USANDO BORDAS */
 .navbar-nav .nav-item {
-    padding: 0 0.75rem; /* Espaçamento entre os links */
+    padding: 0 0.75rem;
 }
 
-/* Adiciona a borda à direita de cada item, exceto o último */
 .navbar-nav .nav-item:not(:last-child) {
     border-right: 1px solid #ced4da;
 }
 
 .navbar-nav .nav-link {
-    color: #343a40 !important; /* Cor padrão escura */
+    color: #343a40 !important;
     transition: color 0.2s ease-in-out;
 }
 
 .navbar-nav .nav-link:hover,
 .navbar-nav .nav-link.active {
-    color: #D65DB1 !important; /* Cor da sua paleta no hover */
+    color: #D65DB1 !important;
 }
 
 .navbar-text {
-    color: #D65DB1 !important; /* Cor da sua paleta */
+    color: #D65DB1 !important;
 }
 
 /* -------------------- Seção de Vídeo (Hero) -------------------- */
@@ -155,9 +154,9 @@ body {
 }
 
 
-/* Estilos de Cores para Etapas e Habilidades (Corrigido) */
+/* -------------------- Estilos de Cores para Etapas e Habilidades (Corrigido) -------------------- */
 
-/* -------------------- Estilos Genéricos de Tags -------------------- */
+/* Estilos Genéricos de Tags */
 .etapa-educacao-infantil,
 .etapa-ensino-fundamental-i,
 .etapa-ensino-fundamental-ii,
@@ -173,37 +172,32 @@ body {
     font-size: 0.85em !important;
 }
 
-/* -------------------- Cores para a Etapa (Usando Seletor Flexível) -------------------- */
-
-/* Educação Infantil */
+/* Cores para a Etapa (Usando Seletor Flexível) */
 [class*="etapa-educacao-infantil"] {
     background-color: #f2e3f5 !important;
     border: 1px solid #845EC2 !important;
     color: #845EC2 !important;
 }
 
-/* Ensino Fundamental I */
 [class*="etapa-ensino-fundamental-i"] {
     background-color: #f7e1ee !important;
     border: 1px solid #D65DB1 !important;
     color: #D65DB1 !important;
 }
 
-/* Ensino Fundamental II */
 [class*="etapa-ensino-fundamental-ii"] {
     background-color: #fff4d9 !important;
     border: 1px solid #FFC75F !important;
     color: #FFC75F !important;
 }
 
-/* Ensino Médio */
 [class*="etapa-ensino-medio"] {
     background-color: #e9ecef !important;
     border: 1px solid #343A40 !important;
     color: #343A40 !important;
 }
 
-/* -------------------- Cores para as Habilidades (Ajustado) -------------------- */
+/* Cores para as Habilidades (Ajustado) */
 .habilidade-tag[class*="etapa-educacao-infantil"] {
     background-color: #f2e3f5 !important;
     border: 1px solid #845EC2 !important;
