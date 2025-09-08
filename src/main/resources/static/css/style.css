@@ -180,33 +180,36 @@ body {
     display: inline-block;
     padding: 3px 8px;
     margin: 2px;
+    background-color: #f0f0f0; /* Cor de fundo padrão */
+    border: 1px solid #ccc; /* Borda padrão */
     border-radius: 4px;
     font-size: 0.85em;
     font-weight: bold;
-    cursor: help; /* Muda o cursor para indicar que há um tooltip */
+    cursor: help;
 }
 
 /* Classes para as cores das Habilidades, baseadas na Etapa Educacional */
-.habilidade-tag.etapa-educacao-infantil {
-    background-color: #f2e3f5; /* Tom mais claro do roxo */
-    border: 1px solid #845EC2; /* Borda com a cor da etapa */
-    color: #845EC2; /* Texto com a cor da etapa */
+
+.list-group-item .habilidade-tag.etapa-educacao-infantil {
+    background-color: #f2e3f5;
+    border: 1px solid #845EC2;
+    color: #845EC2;
 }
 
-.habilidade-tag.etapa-ensino-fundamental-i {
-    background-color: #f7e1ee; /* Tom mais claro do rosa */
+.list-group-item .habilidade-tag.etapa-ensino-fundamental-i {
+    background-color: #f7e1ee;
     border: 1px solid #D65DB1;
     color: #D65DB1;
 }
 
-.habilidade-tag.etapa-ensino-fundamental-ii {
-    background-color: #fff4d9; /* Tom mais claro do amarelo */
+.list-group-item .habilidade-tag.etapa-ensino-fundamental-ii {
+    background-color: #fff4d9;
     border: 1px solid #FFC75F;
     color: #FFC75F;
 }
 
-.habilidade-tag.etapa-ensino-medio {
-    background-color: #e9ecef; /* Tom de cinza '-' */
+.list-group-item .habilidade-tag.etapa-ensino-medio {
+    background-color: #e9ecef;
     border: 1px solid #343A40;
     color: #343A40;
 }
