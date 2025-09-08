@@ -69,23 +69,23 @@ $(document).ready(function() {
         dataType: 'json'
     }).done(function(data) {
         var habilidadesSelect = $('#habilidades');
-        
-        // Limpa as opções existentes
-        habilidadesSelect.empty();
-        
-        // Adiciona uma nova opção para cada habilidade, guardando a descrição
+
+        // Adiciona uma nova opção para cada habilidade, verificando se ela já existe
         $.each(data, function(index, habilidade) {
-            var option = new Option(habilidade.codigoHabilidade + ' - ' + habilidade.etapaEducacional, habilidade.id, false, false);
-            $(option).data('descricao', habilidade.descricao); // Guarda a descrição aqui
-            habilidadesSelect.append(option);
+            // Se a opção ainda não existe no DOM, será adicionado
+            if (habilidadesSelect.find('option[value="' + habilidade.id + '"]').length === 0) {
+                var option = new Option(habilidade.codigoHabilidade + ' - ' + habilidade.etapaEducacional, habilidade.id, false, false);
+                $(option).data('descricao', habilidade.descricao);
+                habilidadesSelect.append(option);
+            }
         });
 
         // Inicializa o Select2 com as funções de template
         habilidadesSelect.select2({
             placeholder: 'Selecione as habilidades',
             allowClear: true,
-            templateResult: formatOption,     // Função para exibir as opções na lista
-            templateSelection: formatOption  // Função para exibir os itens selecionados
+            templateResult: formatOption,
+            templateSelection: formatOption
         });
     });
 
@@ -97,12 +97,11 @@ $(document).ready(function() {
 
         var descricao = $(option.element).data('descricao');
         var $option = $('<span>' + option.text + '</span>');
-        
+
         if (descricao) {
-            $option.attr('title', descricao); // Adiciona o tooltip aqui
+            $option.attr('title', descricao);
         }
         
         return $option;
     }
-
 });
