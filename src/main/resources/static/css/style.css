@@ -11,7 +11,7 @@ body {
     background-size: 20px 20px;
 }
 
-/* -------------------- Navbar Único e Simples -------------------- */
+/* -------------------- Navbar -------------------- */
 .navbar {
     background-color: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -22,7 +22,6 @@ body {
     font-weight: 600;
 }
 
-/* NOVO ESTILO PARA SEPARADORES USANDO BORDAS */
 .navbar-nav .nav-item {
     padding: 0 0.75rem;
 }
@@ -45,7 +44,7 @@ body {
     color: #D65DB1 !important;
 }
 
-/* -------------------- Seção de Vídeo (Hero) -------------------- */
+/* -------------------- Hero Vídeo -------------------- */
 .hero-video-container {
     position: fixed;
     top: 0;
@@ -87,12 +86,11 @@ body {
     z-index: 2;
 }
 
-/* -------------------- Espaçador -------------------- */
 .hero-spacer {
     height: 100vh;
 }
 
-/* -------------------- Contêiner do Conteúdo -------------------- */
+/* -------------------- Conteúdo -------------------- */
 #content-container {
     position: relative;
     z-index: 10;
@@ -102,7 +100,7 @@ body {
     box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* -------------------- Estilos dos Cards e Botões -------------------- */
+/* -------------------- Cards -------------------- */
 .card {
     border: 1px solid #D65DB1;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -117,11 +115,22 @@ body {
     color: #845EC2;
 }
 
+/* Limitar descrições muito longas */
+.card-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 3.6em; /* Mantém altura uniforme */
+}
+
 .card-footer {
     background-color: #f8f9fa;
     border-top: 1px solid #D65DB1;
 }
 
+/* -------------------- Botões -------------------- */
 .btn-primary {
     background-color: #845EC2;
     border-color: #845EC2;
@@ -138,11 +147,11 @@ body {
     color: #343A40;
 }
 .btn-secondary:hover {
-    background-color: #FFC75F;
-    border-color: #FFC75F;
+    background-color: #ffb900;
+    border-color: #ffb900;
 }
 
-/* CORREÇÃO DE LAYOUT DO GRID */
+/* -------------------- Layout Grid -------------------- */
 #conteudo-atividades.row {
     --bs-gutter-x: 1.5rem;
     --bs-gutter-y: 1.5rem;
@@ -153,10 +162,7 @@ body {
     margin-left: calc(-.5 * var(--bs-gutter-x));
 }
 
-
-/* -------------------- Estilos de Cores para Etapas e Habilidades (Corrigido) -------------------- */
-
-/* Estilos Genéricos de Tags */
+/* -------------------- Etapas e Habilidades -------------------- */
 .etapa-educacao-infantil,
 .etapa-ensino-fundamental-i,
 .etapa-ensino-fundamental-ii,
@@ -172,7 +178,7 @@ body {
     font-size: 0.85em !important;
 }
 
-/* Cores para a Etapa (Usando Seletor Flexível) */
+/* Etapas */
 [class*="etapa-educacao-infantil"] {
     background-color: #f2e3f5 !important;
     border: 1px solid #845EC2 !important;
@@ -197,7 +203,7 @@ body {
     color: #343A40 !important;
 }
 
-/* Cores para as Habilidades (Ajustado) */
+/* Habilidades */
 .habilidade-tag[class*="etapa-educacao-infantil"] {
     background-color: #f2e3f5 !important;
     border: 1px solid #845EC2 !important;
