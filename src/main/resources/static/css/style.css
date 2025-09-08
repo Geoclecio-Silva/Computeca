@@ -1,3 +1,4 @@
+/* -------------------- Importa a fonte Poppins -------------------- */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 /* ----- PALETA DE CORES: #845EC2, #D65DB1, #FFC75F ----- */
@@ -11,7 +12,7 @@ body {
     background-size: 20px 20px;
 }
 
-/* -------------------- Navbar -------------------- */
+/* -------------------- Navbar Único e Simples -------------------- */
 .navbar {
     background-color: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -44,7 +45,7 @@ body {
     color: #D65DB1 !important;
 }
 
-/* -------------------- Hero Vídeo -------------------- */
+/* -------------------- Seção de Vídeo (Hero) -------------------- */
 .hero-video-container {
     position: fixed;
     top: 0;
@@ -86,11 +87,12 @@ body {
     z-index: 2;
 }
 
+/* -------------------- Espaçador -------------------- */
 .hero-spacer {
     height: 100vh;
 }
 
-/* -------------------- Conteúdo -------------------- */
+/* -------------------- Contêiner do Conteúdo -------------------- */
 #content-container {
     position: relative;
     z-index: 10;
@@ -100,7 +102,7 @@ body {
     box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* -------------------- Cards -------------------- */
+/* -------------------- Estilos dos Cards e Botões -------------------- */
 .card {
     border: 1px solid #D65DB1;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -115,22 +117,11 @@ body {
     color: #845EC2;
 }
 
-/* Limitar descrições muito longas */
-.card-text {
-    display: -webkit-box;
-    -webkit-line-clamp: 3; 
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-height: 3.6em; /* Mantém altura uniforme */
-}
-
 .card-footer {
     background-color: #f8f9fa;
     border-top: 1px solid #D65DB1;
 }
 
-/* -------------------- Botões -------------------- */
 .btn-primary {
     background-color: #845EC2;
     border-color: #845EC2;
@@ -146,12 +137,13 @@ body {
     border-color: #FFC75F;
     color: #343A40;
 }
+
 .btn-secondary:hover {
-    background-color: #ffb900;
-    border-color: #ffb900;
+    background-color: #FFC75F;
+    border-color: #FFC75F;
 }
 
-/* -------------------- Layout Grid -------------------- */
+/* CORREÇÃO DE LAYOUT DO GRID */
 #conteudo-atividades.row {
     --bs-gutter-x: 1.5rem;
     --bs-gutter-y: 1.5rem;
@@ -162,12 +154,10 @@ body {
     margin-left: calc(-.5 * var(--bs-gutter-x));
 }
 
-/* -------------------- Etapas e Habilidades -------------------- */
-.etapa-educacao-infantil,
-.etapa-ensino-fundamental-i,
-.etapa-ensino-fundamental-ii,
-.etapa-ensino-medio,
-.habilidade-tag {
+/* -------------------- Estilos de Cores para Etapas e Habilidades -------------------- */
+
+/* Estilos Genéricos de Tags */
+.habilidade-tag, .etapa-educacao-infantil, .etapa-ensino-fundamental-i, .etapa-ensino-fundamental-ii, .etapa-ensino-medio {
     display: inline-block !important;
     padding: 3px 8px !important;
     margin: 2px !important;
@@ -178,51 +168,51 @@ body {
     font-size: 0.85em !important;
 }
 
-/* Etapas */
-[class*="etapa-educacao-infantil"] {
+/* Cores para a Etapa (Usando Seletor Direto) */
+.etapa-educacao-infantil {
     background-color: #f2e3f5 !important;
     border: 1px solid #845EC2 !important;
     color: #845EC2 !important;
 }
 
-[class*="etapa-ensino-fundamental-i"] {
+.etapa-ensino-fundamental-i {
     background-color: #f7e1ee !important;
     border: 1px solid #D65DB1 !important;
     color: #D65DB1 !important;
 }
 
-[class*="etapa-ensino-fundamental-ii"] {
+.etapa-ensino-fundamental-ii {
     background-color: #fff4d9 !important;
     border: 1px solid #FFC75F !important;
     color: #FFC75F !important;
 }
 
-[class*="etapa-ensino-medio"] {
+.etapa-ensino-medio {
     background-color: #e9ecef !important;
     border: 1px solid #343A40 !important;
     color: #343A40 !important;
 }
 
-/* Habilidades */
-.habilidade-tag[class*="etapa-educacao-infantil"] {
+/* Cores para as Habilidades (AGORA COMBINANDO COM AS CLASSES DO HTML) */
+.habilidade-tag.infantil {
     background-color: #f2e3f5 !important;
     border: 1px solid #845EC2 !important;
     color: #845EC2 !important;
 }
 
-.habilidade-tag[class*="etapa-ensino-fundamental-i"] {
+.habilidade-tag.fundamental-i {
     background-color: #f7e1ee !important;
     border: 1px solid #D65DB1 !important;
     color: #D65DB1 !important;
 }
 
-.habilidade-tag[class*="etapa-ensino-fundamental-ii"] {
+.habilidade-tag.fundamental-ii {
     background-color: #fff4d9 !important;
     border: 1px solid #FFC75F !important;
     color: #FFC75F !important;
 }
 
-.habilidade-tag[class*="etapa-ensino-medio"] {
+.habilidade-tag.medio {
     background-color: #e9ecef !important;
     border: 1px solid #343A40 !important;
     color: #343A40 !important;
