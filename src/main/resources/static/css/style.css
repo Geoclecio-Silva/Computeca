@@ -206,7 +206,7 @@ body {
 }
 
 .habilidade-tag.etapa-ensino-medio {
-    background-color: #e9ecef; /* Tom de cinza */
+    background-color: #e9ecef; /* Tom de cinza '-' */
     border: 1px solid #343A40;
     color: #343A40;
 }
