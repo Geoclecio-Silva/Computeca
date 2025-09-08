@@ -16,10 +16,10 @@
                         <li class="list-group-item"><strong>Etapa:</strong> <span th:text="${atividade.etapaEducacional}" th:class="|etapa-${#strings.replace(#strings.toLowerCase(atividade.etapaEducacional), ' ', '-')}|"></span></li>
                         <li class="list-group-item">
                             <strong>Habilidades BNCC:</strong>
-                            <span th:each="habilidade, iterStat : ${atividade.habilidadesBncc}">
-                                <!-- CORREÇÃO AQUI --> 
-                                <span th:text="${habilidade.codigoHabilidade + ' - ' + habilidade.descricao}"></span>
-                                <span th:if="${!iterStat.last}">, </span>
+                            <span th:each="habilidade, iterStat : ${atividade.habilidadesBncc}"
+                                th:text="${habilidade.codigoHabilidade}"
+                                th:title="${habilidade.descricao}"
+                                class="habilidade-tag">
                             </span>
                         </li>
                     </ul>
