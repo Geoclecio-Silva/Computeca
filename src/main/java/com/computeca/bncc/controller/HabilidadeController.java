@@ -19,6 +19,19 @@ public class HabilidadeController {
 
     @GetMapping
     public List<Habilidade> getAllHabilidades() {
-        return habilidadeRepository.findAll();
+        List<Habilidade> habilidades = habilidadeRepository.findAll();
+
+        for (Habilidade habilidade : habilidades) {
+            switch (habilidade.getEtapaEducacional()) {
+                case "Educação Infantil" -> habilidade.setEtapaClasse("etapa-educacao-infantil");
+                case "Ensino Fundamental I" -> habilidade.setEtapaClasse("etapa-ensino-fundamental-i");
+                case "Ensino Fundamental II" -> habilidade.setEtapaClasse("etapa-ensino-fundamental-ii");
+                case "Ensino Médio" -> habilidade.setEtapaClasse("etapa-ensino-medio");
+                default -> habilidade.setEtapaClasse(""); // caso não bata com nenhum
+            }
+
+        }
+
+        return habilidades;
     }
 }

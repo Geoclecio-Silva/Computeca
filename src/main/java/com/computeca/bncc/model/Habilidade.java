@@ -18,6 +18,8 @@ public class Habilidade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String etapaClasse;
+
     @NotBlank(message = "A etapa educacional é obrigatória")
     private String etapaEducacional;
 
@@ -39,6 +41,13 @@ public class Habilidade {
     // Getters e Setters
     public Long getId() {
         return id;
+    }
+    public String getEtapaClasse() {
+    return etapaClasse;
+    }
+    
+    public void setEtapaClasse(String etapaClasse) {
+    this.etapaClasse = etapaClasse;
     }
 
     public void setId(Long id) {
