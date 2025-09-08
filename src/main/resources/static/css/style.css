@@ -144,7 +144,7 @@ body {
 }
 
 /* CORREÇÃO DE LAYOUT DO GRID */
-#conteudo-atividades .row {
+#conteudo-atividades.row {
     --bs-gutter-x: 1.5rem;
     --bs-gutter-y: 1.5rem;
     display: flex;
@@ -153,6 +153,7 @@ body {
     margin-right: calc(-.5 * var(--bs-gutter-x));
     margin-left: calc(-.5 * var(--bs-gutter-x));
 }
+
 
 /* Estilos para as cores das Etapas Educacionais */
 .etapa-educacao-infantil {
