@@ -21,10 +21,14 @@
                         </li>
                         <li class="list-group-item">
                             <strong>Habilidades BNCC:</strong>
-                            <span th:each="habilidade, iterStat : ${atividade.habilidadesBncc}"
-                                th:text="${habilidade.codigoHabilidade}" th:title="${habilidade.descricao}"
-                                th:classappend="|habilidade-tag etapa-${#strings.replace(#strings.toLowerCase(habilidade.etapaEducacional), ' ', '-')}|">
-                            </span>
+                            <div class="habilidades-container">
+                                <span th:each="habilidade, iterStat : ${atividade.habilidadesBncc}" 
+                                      class="habilidade-tag"
+                                      th:class="|habilidade-tag etapa-${#strings.replace(#strings.toLowerCase(habilidade.etapaEducacional), ' ', '-')}|"
+                                      th:text="${habilidade.codigoHabilidade}"
+                                      th:title="${habilidade.descricao}">
+                                </span>
+                            </div>
                         </li>
                     </ul>
                     <div class="card-footer">

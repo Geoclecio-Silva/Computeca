@@ -190,26 +190,26 @@ body {
 
 /* Classes para as cores das Habilidades, baseadas na Etapa Educacional */
 
-.list-group-item .habilidade-tag.etapa-educacao-infantil {
-    background-color: #f2e3f5;
-    border: 1px solid #845EC2;
-    color: #845EC2;
+.habilidade-tag.etapa-educacao-infantil {
+    background-color: #f2e3f5 !important;
+    border: 1px solid #845EC2 !important;
+    color: #845EC2 !important;
 }
 
-.list-group-item .habilidade-tag.etapa-ensino-fundamental-i {
-    background-color: #f7e1ee;
-    border: 1px solid #D65DB1;
-    color: #D65DB1;
+.habilidade-tag.etapa-ensino-fundamental-i {
+    background-color: #f7e1ee !important;
+    border: 1px solid #D65DB1 !important;
+    color: #D65DB1 !important;
 }
 
-.list-group-item .habilidade-tag.etapa-ensino-fundamental-ii {
-    background-color: #fff4d9;
-    border: 1px solid #FFC75F;
-    color: #FFC75F;
+.habilidade-tag.etapa-ensino-fundamental-ii {
+    background-color: #fff4d9 !important;
+    border: 1px solid #FFC75F !important;
+    color: #FFC75F !important;
 }
 
-.list-group-item .habilidade-tag.etapa-ensino-medio {
-    background-color: #e9ecef;
-    border: 1px solid #343A40;
-    color: #343A40;
+.habilidade-tag.etapa-ensino-medio {
+    background-color: #e9ecef !important;
+    border: 1px solid #343A40 !important;
+    color: #343A40 !important;
 }
