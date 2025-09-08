@@ -40,38 +40,47 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    <!-- Início -->
                     <li class="nav-item">
                         <a class="nav-link"
                            th:href="@{/}"
                            th:classappend="${servletPath != null and servletPath == '/' ? 'active' : ''}"
-                           th:attrappend="${servletPath != null and servletPath == '/' ? 'aria-current=page' : ''}">
+                           th:attr="aria-current=${servletPath != null and servletPath == '/' ? 'page' : null}">
                             Início
                         </a>
                     </li>
+
+                    <!-- Sobre -->
                     <li class="nav-item">
                         <a class="nav-link"
                            th:href="@{/sobre}"
                            th:classappend="${servletPath != null and servletPath.startsWith('/sobre') ? 'active' : ''}"
-                           th:attrappend="${servletPath != null and servletPath.startsWith('/sobre') ? 'aria-current=page' : ''}">
+                           th:attr="aria-current=${servletPath != null and servletPath.startsWith('/sobre') ? 'page' : null}">
                             Sobre
                         </a>
                     </li>
+
+                    <!-- Login (não autenticado) -->
                     <li class="nav-item" sec:authorize="!isAuthenticated()">
                         <a class="nav-link"
                            th:href="@{/login}"
                            th:classappend="${servletPath != null and servletPath.startsWith('/login') ? 'active' : ''}"
-                           th:attrappend="${servletPath != null and servletPath.startsWith('/login') ? 'aria-current=page' : ''}">
+                           th:attr="aria-current=${servletPath != null and servletPath.startsWith('/login') ? 'page' : null}">
                             Login Administrativo
                         </a>
                     </li>
+
+                    <!-- Área Administrativa (autenticado) -->
                     <li class="nav-item" sec:authorize="isAuthenticated()">
                         <a class="nav-link"
                            th:href="@{/admin}"
                            th:classappend="${servletPath != null and servletPath.startsWith('/admin') ? 'active' : ''}"
-                           th:attrappend="${servletPath != null and servletPath.startsWith('/admin') ? 'aria-current=page' : ''}">
+                           th:attr="aria-current=${servletPath != null and servletPath.startsWith('/admin') ? 'page' : null}">
                             Área Administrativa
                         </a>
                     </li>
+
+                    <!-- Logout -->
                     <li class="nav-item" sec:authorize="isAuthenticated()">
                         <form th:action="@{/logout}" method="post" class="d-inline">
                             <button type="submit" class="btn btn-link nav-link p-0">Sair</button>
