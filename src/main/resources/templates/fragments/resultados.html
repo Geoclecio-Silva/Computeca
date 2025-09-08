@@ -19,7 +19,7 @@
                             <span th:each="habilidade, iterStat : ${atividade.habilidadesBncc}"
                                 th:text="${habilidade.codigoHabilidade}"
                                 th:title="${habilidade.descricao}"
-                                th:classappend="|habilidade-tag etapa-${#strings.replace(#strings.toLowerCase(hab.etapaEducacional), ' ', '-')}|">
+                                th:classappend="|habilidade-tag etapa-${#strings.replace(#strings.toLowerCase(habilidade.etapaEducacional), ' ', '-')}|">
                             </span>
                         </li>
                     </ul>
