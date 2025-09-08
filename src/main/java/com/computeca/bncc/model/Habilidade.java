@@ -19,7 +19,7 @@ public class Habilidade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Campo temporário para classe CSS, não persistido no banco
+    // Campo temporário para classe CSS no Thymeleaf
     @Transient
     private String etapaClasse;
 
@@ -28,11 +28,11 @@ public class Habilidade {
 
     @NotBlank(message = "O código da habilidade é obrigatório")
     private String codigoHabilidade;
-    
+
     @NotBlank(message = "A descrição é obrigatória")
     @Column(columnDefinition = "TEXT")
     private String descricao;
-    
+
     public Habilidade() {}
 
     public Habilidade(String etapaEducacional, String codigoHabilidade, String descricao) {
@@ -62,7 +62,6 @@ public class Habilidade {
         return codigoHabilidade + " - " + descricao;
     }
 
-    // equals e hashCode baseados no id
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

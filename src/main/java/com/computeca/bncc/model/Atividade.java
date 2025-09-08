@@ -44,12 +44,11 @@ public class Atividade {
 
     private String etapaEducacional;
 
-    
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
-    name = "atividade_habilidades",
-    joinColumns = @JoinColumn(name = "atividade_id"),
-    inverseJoinColumns = @JoinColumn(name = "habilidade_id")
+        name = "atividade_habilidades",
+        joinColumns = @JoinColumn(name = "atividade_id"),
+        inverseJoinColumns = @JoinColumn(name = "habilidade_id")
     )
     private List<Habilidade> habilidadesBncc = new ArrayList<>();
 
@@ -57,24 +56,22 @@ public class Atividade {
 
     private String urlImagem;
 
-    
     @Transient
     private MultipartFile imagem;
 
-    
     @Transient
     private String habilidadesComoString;
 
     @Transient
     private String etapaComoString;
 
-    
+  
     public Atividade(String nome, String descricao) {
         this.nome = nome;
         this.descricao = descricao;
     }
 
-    
+    // Prepara campos auxiliares para edição no formulário
     public void prepararParaEdicao() {
         this.etapaComoString = this.etapaEducacional;
         if (this.habilidadesBncc != null && !this.habilidadesBncc.isEmpty()) {
@@ -84,9 +81,9 @@ public class Atividade {
         }
     }
 
-    
+    // Atualiza campos a partir do formulário
     public void atualizarAPartirDoFormulario() {
         this.etapaEducacional = this.etapaComoString;
-       
+      
     }
 }
