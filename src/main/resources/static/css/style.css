@@ -155,25 +155,39 @@ body {
 }
 
 
-/* Estilos para as cores das Etapas Educacionais */
-.etapa-educacao-infantil {
-    color: #845EC2; /* Roxo */
+/* Estilos para as Etiquetas de Etapa */
+.etapa-educacao-infantil,
+.etapa-ensino-fundamental-i,
+.etapa-ensino-fundamental-ii,
+.etapa-ensino-medio {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
     font-weight: 600;
+}
+
+.etapa-educacao-infantil {
+    background-color: #f2e3f5;
+    border: 1px solid #845EC2;
+    color: #845EC2;
 }
 
 .etapa-ensino-fundamental-i {
-    color: #D65DB1; /* Rosa */
-    font-weight: 600;
+    background-color: #f7e1ee;
+    border: 1px solid #D65DB1;
+    color: #D65DB1;
 }
 
 .etapa-ensino-fundamental-ii {
-    color: #FFC75F; /* Amarelo */
-    font-weight: 600;
+    background-color: #fff4d9;
+    border: 1px solid #FFC75F;
+    color: #FFC75F;
 }
 
 .etapa-ensino-medio {
-    color: #343A40; /* Cor escura padrão */
-    font-weight: 600;
+    background-color: #e9ecef;
+    border: 1px solid #343A40;
+    color: #343A40;
 }
 
 /* Estilos para as Tags de Habilidades */
@@ -181,8 +195,8 @@ body {
     display: inline-block;
     padding: 3px 8px;
     margin: 2px;
-    background-color: #f0f0f0; /* Cor de fundo padrão */
-    border: 1px solid #ccc; /* Borda padrão */
+    background-color: #f0f0f0; 
+    border: 1px solid #ccc; 
     border-radius: 4px;
     font-size: 0.85em;
     font-weight: bold;
@@ -190,7 +204,6 @@ body {
 }
 
 /* Classes para as cores das Habilidades, baseadas na Etapa Educacional */
-
 .habilidade-tag.etapa-educacao-infantil {
     background-color: #f2e3f5 !important;
     border: 1px solid #845EC2 !important;
