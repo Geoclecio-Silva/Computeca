@@ -175,15 +175,38 @@ body {
     font-weight: 600;
 }
 
+/* Estilos para as Tags de Habilidades */
 .habilidade-tag {
     display: inline-block;
     padding: 3px 8px;
     margin: 2px;
-    background-color: #f0f0f0;
     border-radius: 4px;
-    border: 1px solid #ccc;
     font-size: 0.85em;
     font-weight: bold;
-    color: #555;
     cursor: help; /* Muda o cursor para indicar que há um tooltip */
+}
+
+/* Classes para as cores das Habilidades, baseadas na Etapa Educacional */
+.habilidade-tag.etapa-educacao-infantil {
+    background-color: #f2e3f5; /* Tom mais claro do roxo */
+    border: 1px solid #845EC2; /* Borda com a cor da etapa */
+    color: #845EC2; /* Texto com a cor da etapa */
+}
+
+.habilidade-tag.etapa-ensino-fundamental-i {
+    background-color: #f7e1ee; /* Tom mais claro do rosa */
+    border: 1px solid #D65DB1;
+    color: #D65DB1;
+}
+
+.habilidade-tag.etapa-ensino-fundamental-ii {
+    background-color: #fff4d9; /* Tom mais claro do amarelo */
+    border: 1px solid #FFC75F;
+    color: #FFC75F;
+}
+
+.habilidade-tag.etapa-ensino-medio {
+    background-color: #e9ecef; /* Tom de cinza */
+    border: 1px solid #343A40;
+    color: #343A40;
 }
