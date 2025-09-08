@@ -8,7 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank; // Importar a classe Objects
+import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "habilidades")
@@ -18,6 +19,8 @@ public class Habilidade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Campo temporário para classe CSS, não persistido no banco
+    @Transient
     private String etapaClasse;
 
     @NotBlank(message = "A etapa educacional é obrigatória")
@@ -39,51 +42,27 @@ public class Habilidade {
     }
 
     // Getters e Setters
-    public Long getId() {
-        return id;
-    }
-    public String getEtapaClasse() {
-    return etapaClasse;
-    }
-    
-    public void setEtapaClasse(String etapaClasse) {
-    this.etapaClasse = etapaClasse;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getEtapaClasse() { return etapaClasse; }
+    public void setEtapaClasse(String etapaClasse) { this.etapaClasse = etapaClasse; }
 
-    public String getEtapaEducacional() {
-        return etapaEducacional;
-    }
+    public String getEtapaEducacional() { return etapaEducacional; }
+    public void setEtapaEducacional(String etapaEducacional) { this.etapaEducacional = etapaEducacional; }
 
-    public void setEtapaEducacional(String etapaEducacional) {
-        this.etapaEducacional = etapaEducacional;
-    }
+    public String getCodigoHabilidade() { return codigoHabilidade; }
+    public void setCodigoHabilidade(String codigoHabilidade) { this.codigoHabilidade = codigoHabilidade; }
 
-    public String getCodigoHabilidade() {
-        return codigoHabilidade;
-    }
-
-    public void setCodigoHabilidade(String codigoHabilidade) {
-        this.codigoHabilidade = codigoHabilidade;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
+    public String getDescricao() { return descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
 
     @Override
     public String toString() {
         return codigoHabilidade + " - " + descricao;
     }
 
-    // Implementação dos métodos equals e hashCode
+    // equals e hashCode baseados no id
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
