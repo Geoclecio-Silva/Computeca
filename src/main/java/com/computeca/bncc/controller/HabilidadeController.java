@@ -30,7 +30,7 @@ public class HabilidadeController {
                 case "Educação Infantil" -> classe = "etapa-educacao-infantil";
                 case "Ensino Fundamental I" -> classe = "etapa-ensino-fundamental-i";
                 case "Ensino Fundamental II" -> classe = "etapa-ensino-fundamental-ii";
-                case "Ensino Médio" -> classe = "etapa-ensino-medio";
+                case "Ensino Médio" -> classe = "etapa-ensino-medio"; // Remove o acento
                 default -> classe = "";
             }
 

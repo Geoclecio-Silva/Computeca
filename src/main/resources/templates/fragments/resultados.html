@@ -4,7 +4,6 @@
 <body>
 
     <div th:fragment="resultados">
-        <!-- Se houver atividades -->
         <div th:if="${not #lists.isEmpty(atividades)}" id="conteudo-atividades"
             class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
 
@@ -24,9 +23,8 @@
                         </li>
                         <li class="list-group-item">
                             <strong>Etapa:</strong>
-                            <!-- Classe aplicada dinamicamente de acordo com o nome da etapa -->
                             <span th:text="${atividade.etapaEducacional}"
-                                th:classappend="|etapa-${#strings.replace(#strings.toLowerCase(atividade.etapaEducacional), ' ', '-')}|">
+                                th:classappend="|etapa-${#strings.replace(#strings.replace(#strings.toLowerCase(atividade.etapaEducacional), 'é', 'e'), 'ã', 'a')}|">
                             </span>
                         </li>
                         <li class="list-group-item">
@@ -47,7 +45,6 @@
             </div>
         </div>
 
-        <!-- Se não houver atividades -->
         <div th:if="${#lists.isEmpty(atividades)}" class="text-center mt-5">
             <p>Nenhuma atividade encontrada com os filtros aplicados.</p>
         </div>
