@@ -25,7 +25,7 @@
                         <li class="list-group-item">
                             <strong>Etapa:</strong>
                             <span th:text="${atividade.etapaEducacional}"
-                                th:classappend="|etapa-${#strings.replace(#strings.replace(#strings.toLowerCase(atividade.etapaEducacional), 'é', 'e'), 'ã', 'a')}|">
+                                th:classappend="${atividade.etapaClasse}">
                             </span>
                         </li>
                         <li class="list-group-item">
