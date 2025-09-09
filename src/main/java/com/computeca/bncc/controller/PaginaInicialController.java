@@ -49,9 +49,8 @@ public class PaginaInicialController {
         
         List<Atividade> atividades = atividadesPage.getContent();
         
-        // NOVO CÓDIGO: Popula a classe de estilo para cada habilidade com verificação de null
+        // NOVO CÓDIGO: Popula a classe de estilo para cada habilidade
         for (Atividade atividade : atividades) {
-            // Verifica se a lista de habilidades não é nula antes de iterar
             if (atividade.getHabilidadesBncc() != null) {
                 for (Habilidade hab : atividade.getHabilidadesBncc()) {
                     hab.popularEtapaClasse();
@@ -95,9 +94,8 @@ public class PaginaInicialController {
 
         List<Atividade> atividades = atividadesPage.getContent();
 
-        // NOVO CÓDIGO: Popula a classe de estilo para cada habilidade com verificação de null
+        // NOVO CÓDIGO: Popula a classe de estilo para cada habilidade
         for (Atividade atividade : atividades) {
-            // Verifica se a lista de habilidades não é nula antes de iterar
             if (atividade.getHabilidadesBncc() != null) {
                 for (Habilidade hab : atividade.getHabilidadesBncc()) {
                     hab.popularEtapaClasse();
