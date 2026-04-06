@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/base}">
+<head>
+    <title>Revisão de Atividades</title>
+</head>
+<body>
+<div layout:fragment="conteudo">
+    <div class="container mt-4">
+        <h2>Atividades para Revisão</h2>
+        
+        <div th:each="atividade : ${atividades.content}">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 th:text="${atividade.nome}"></h5>
+                    <p th:text="${atividade.descricao}"></p>
+                    <small class="text-muted">
+                        Enviado por: <span th:text="${atividade.criadoPor.nome}"></span>
+                    </small>
+                    
+                    <div class="mt-3">
+                        <form th:action="@{/atividades/revisar/{id}(id=${atividade.id})}" method="post">
+                            <div class="mb-2">
+                                <label for="motivo" class="form-label">Motivo (se rejeitar):</label>
+                                <textarea class="form-control" id="motivo" name="motivo" rows="2"></textarea>
+                            </div>
+                            <button type="submit" name="status" value="APROVADA" 
+                                    class="btn btn-success">Aprovar</button>
+                            <button type="submit" name="status" value="REJEITADA" 
+                                    class="btn btn-danger">Rejeitar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/base}">
+<head>
+    <title>Doações - Computeca</title>
+    <style>
+        .donation-section {
+            background: linear-gradient(135deg, #845EC2 0%, #D65DB1 100%);
+            color: white;
+            border-radius: 15px;
+        }
+        
+        .donation-card {
+            border: 2px solid #845EC2;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .donation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(132, 94, 194, 0.2);
+        }
+        
+        .donation-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #845EC2;
+        }
+        
+        .qr-code-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .benefits-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .benefits-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .benefits-list li:before {
+            content: "✓";
+            color: #845EC2;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div layout:fragment="conteudo">
+        
+        <!-- Hero Section -->
+        <div class="container-fluid donation-section py-5 mb-5">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <h1 class="display-4 fw-bold">Ajude a manter o Computeca no ar! 💝</h1>
+                        <p class="lead mb-4">
+                            O Computeca é mantido de forma voluntária e independente. 
+                            Sua doação ajuda a cobrir custos de hospedagem, domínio e desenvolvimento.
+                        </p>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="#como-doar" class="btn btn-light btn-lg">Como Doar</a>
+                            <a href="#porque-doar" class="btn btn-outline-light btn-lg">Por que Doar?</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 text-center">
+                        <div class="qr-code-container mt-4 mt-lg-0">
+                            <img th:src="@{/images/doações.jpeg}" 
+                                 alt="QR Code PIX" 
+                                 class="img-fluid"
+                                 style="max-width: 200px;">
+                            <p class="mt-3 mb-0 text-muted">Escaneie para doar via PIX</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Why Donate Section -->
+        <div class="container py-5" id="porque-doar">
+            <div class="row">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <h2 class="mb-4">Por que sua doação é importante? 🤔</h2>
+                    <p class="mb-4">
+                        O Computeca nasceu da paixão por educação e tecnologia. Somos uma iniciativa 
+                        100% gratuita, sem anúncios e sem fins lucrativos. Cada doação nos ajuda a:
+                    </p>
+                    
+                    <ul class="benefits-list">
+                        <li>Manter o site no ar 24/7</li>
+                        <li>Pagar servidores e domínio</li>
+                        <li>Adicionar novas atividades</li>
+                        <li>Melhorar a plataforma</li>
+                        <li>Criar mais recursos para professores</li>
+                        <li>Expandir para mais escolas</li>
+                    </ul>
+                    
+                    <div class="mt-5 p-4 bg-light rounded">
+                        <h5 class="text-primary">Transparência Total</h5>
+                        <p class="mb-0">
+                            Publicamos relatórios periódicos mostrando como cada centavo é utilizado. 
+                            Acreditamos na transparência como base da confiança.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="card donation-card h-100">
+                        <div class="card-body p-4">
+                            <h3 class="card-title mb-4">Impacto das Doações 🎯</h3>
+                            
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Servidor Mensal</span>
+                                    <span class="text-success">✓ Coberto</span>
+                                </div>
+                                <div class="progress" style="height: 10px;">
+                                    <div class="progress-bar bg-success" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Domínio Anual</span>
+                                    <span class="text-success">✓ Coberto</span>
+                                </div>
+                                <div class="progress" style="height: 10px;">
+                                    <div class="progress-bar bg-success" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Novos Recursos</span>
+                                    <span>R$ 250/500</span>
+                                </div>
+                                <div class="progress" style="height: 10px;">
+                                    <div class="progress-bar" style="width: 50%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-5">
+                                <p class="text-muted">Atualizado em <span th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy')}"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- How to Donate Section -->
+        <div class="container py-5 bg-light rounded-3" id="como-doar">
+            <h2 class="text-center mb-5">Como Doar? 💰</h2>
+            
+            <div class="row g-4">
+                <!-- PIX -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card donation-card h-100 text-center">
+                        <div class="card-body p-4">
+                            <div class="mb-3">
+                                <span class="display-4">🏦</span>
+                            </div>
+                            <h4 class="card-title">PIX</h4>
+                            <p class="card-text">Doação instantânea, sem taxas</p>
+                            <div class="mt-4">
+                                <p class="text-muted small mb-2">Chave PIX:</p>
+                                <div class="input-group">
+                                    <input type="text" 
+                                           class="form-control text-center" 
+                                           value="doacoes@computeca.org"
+                                           id="pix-key"
+                                           readonly>
+                                    <button class="btn btn-outline-primary" 
+                                            onclick="copiarPix()">
+                                        Copiar
+                                    </button>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary w-100 mt-3" onclick="abrirModalPix()">
+                                Ver QR Code
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- PayPal -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card donation-card h-100 text-center">
+                        <div class="card-body p-4">
+                            <div class="mb-3">
+                                <span class="display-4">💳</span>
+                            </div>
+                            <h4 class="card-title">PayPal</h4>
+                            <p class="card-text">Cartão de crédito ou PayPal</p>
+                            <div class="mt-4">
+                                <form action="https://www.paypal.com/donate" method="post" target="_blank">
+                                    <input type="hidden" name="hosted_button_id" value="SEU_CODIGO_AQUI">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        Doar via PayPal
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Transferência Bancária -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card donation-card h-100 text-center">
+                        <div class="card-body p-4">
+                            <div class="mb-3">
+                                <span class="display-4">🏛️</span>
+                            </div>
+                            <h4 class="card-title">Transferência</h4>
+                            <p class="card-text">Transferência bancária direta</p>
+                            <div class="mt-4">
+                                <p class="text-muted small mb-0">Banco: XXX</p>
+                                <p class="text-muted small mb-0">Agência: XXXX</p>
+                                <p class="text-muted small mb-0">Conta: XXXXX-X</p>
+                                <p class="text-muted small">CNPJ: XX.XXX.XXX/XXXX-XX</p>
+                                <button class="btn btn-outline-primary w-100 mt-2" onclick="copiarDadosBancarios()">
+                                    Copiar Dados
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mensal (Recorrente) -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card donation-card h-100 text-center">
+                        <div class="card-body p-4">
+                            <div class="mb-3">
+                                <span class="display-4">🔄</span>
+                            </div>
+                            <h4 class="card-title">Mensal</h4>
+                            <p class="card-text">Apoio recorrente mensal</p>
+                            <div class="mt-4">
+                                <div class="btn-group-vertical w-100" role="group">
+                                    <button type="button" class="btn btn-outline-primary" onclick="doarValor(10)">
+                                        R$ 10/mês
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary" onclick="doarValor(25)">
+                                        R$ 25/mês
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary" onclick="doarValor(50)">
+                                        R$ 50/mês
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary" onclick="doarValorCustom()">
+                                        Outro valor
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Suggested Values -->
+        <div class="container py-5">
+            <h3 class="text-center mb-4">Valores Sugeridos</h3>
+            <div class="row g-3 justify-content-center">
+                <div class="col-auto">
+                    <button class="btn btn-lg btn-outline-primary px-4" onclick="doarValorUnico(10)">
+                        R$ 10
+                    </button>
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-lg btn-primary px-4" onclick="doarValorUnico(25)">
+                        R$ 25
+                    </button>
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-lg btn-outline-primary px-4" onclick="doarValorUnico(50)">
+                        R$ 50
+                    </button>
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-lg btn-outline-primary px-4" onclick="doarValorUnico(100)">
+                        R$ 100
+                    </button>
+                </div>
+                <div class="col-auto">
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text">R$</span>
+                        <input type="number" 
+                               class="form-control" 
+                               id="custom-amount" 
+                               placeholder="Outro"
+                               min="1"
+                               style="width: 120px;">
+                        <button class="btn btn-primary" onclick="doarCustom()">
+                            Doar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="container py-5">
+            <h3 class="text-center mb-5">Perguntas Frequentes ❓</h3>
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            As doações são dedutíveis do imposto de renda?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Infelizmente, o Computeca ainda não possui certificação como OSCIP ou similar, 
+                            portanto as doações não são dedutíveis do IR no momento.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            Como sei que minha doação será bem utilizada?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Publicamos relatórios trimestrais transparentes em nosso blog, mostrando 
+                            todos os gastos e investimentos realizados com as doações recebidas.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            Posso cancelar uma doação recorrente?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Sim, a qualquer momento. Para doações via PayPal, basta cancelar no painel 
+                            da sua conta PayPal. Para outras formas, entre em contato conosco.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Final -->
+        <div class="container text-center py-5">
+            <h2 class="mb-4">Juntos podemos fazer a diferença na educação! 🌟</h2>
+            <p class="lead mb-5">
+                Cada doação, por menor que seja, nos ajuda a continuar oferecendo recursos gratuitos 
+                para milhares de professores e estudantes em todo o Brasil.
+            </p>
+            <a href="#como-doar" class="btn btn-primary btn-lg px-5">
+                Fazer uma Doação Agora
+            </a>
+        </div>
+
+        <!-- Modal PIX -->
+        <div class="modal fade" id="modalPix" tabindex="-1" aria-labelledby="modalPixLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalPixLabel">Doação via PIX</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <div class="qr-code-container mb-4 mx-auto">
+                            <img th:src="@{/images/qr-code-pix.png}" 
+                                 alt="QR Code PIX" 
+                                 class="img-fluid"
+                                 style="max-width: 250px;">
+                        </div>
+                        <div class="mb-3">
+                            <p class="mb-1">Chave PIX:</p>
+                            <div class="input-group">
+                                <input type="text" 
+                                       class="form-control text-center" 
+                                       value="doacoes@computeca.org"
+                                       id="modal-pix-key"
+                                       readonly>
+                                <button class="btn btn-outline-primary" onclick="copiarPixModal()">
+                                    Copiar
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-muted small">
+                            Escaneie o QR Code com seu app bancário ou copie a chave PIX.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript específico para a página de doações -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        
+        function copiarPix() {
+            const pixKey = document.getElementById('pix-key').value;
+            navigator.clipboard.writeText(pixKey).then(() => {
+                alert('Chave PIX copiada!');
+            });
+        }
+        
+        function copiarPixModal() {
+            const pixKey = document.getElementById('modal-pix-key').value;
+            navigator.clipboard.writeText(pixKey).then(() => {
+                alert('Chave PIX copiada!');
+            });
+        }
+        
+        function copiarDadosBancarios() {
+            const dados = `Banco: XXX\nAgência: XXXX\nConta: XXXXX-X\nCNPJ: XX.XXX.XXX/XXXX-XX`;
+            navigator.clipboard.writeText(dados).then(() => {
+                alert('Dados bancários copiados!');
+            });
+        }
+        
+        function abrirModalPix() {
+            const modal = new bootstrap.Modal(document.getElementById('modalPix'));
+            modal.show();
+        }
+        
+        function doarValor(valor) {
+            if (confirm(`Deseja doar R$ ${valor} mensalmente?`)) {
+                // Aqui você redirecionaria para o PayPal/outro sistema de doação recorrente
+                alert(`Redirecionando para doação recorrente de R$ ${valor}/mês...`);
+                // window.location.href = `/doar/recorrente?valor=${valor}`;
+            }
+        }
+        
+        function doarValorUnico(valor) {
+            if (confirm(`Deseja doar R$ ${valor} (valor único)?`)) {
+                // Redirecionar para PIX ou outro gateway
+                alert(`Redirecionando para doação de R$ ${valor}...`);
+                // window.location.href = `/doar?valor=${valor}`;
+            }
+        }
+        
+        function doarCustom() {
+            const valor = document.getElementById('custom-amount').value;
+            if (valor && valor > 0) {
+                doarValorUnico(parseFloat(valor));
+            } else {
+                alert('Por favor, insira um valor válido.');
+            }
+        }
+        
+        function doarValorCustom() {
+            const valor = prompt('Digite o valor mensal desejado (R$):');
+            if (valor && valor > 0) {
+                doarValor(parseFloat(valor));
+            }
+        }
+        
+        /*]]>*/
+    </script>
+</body>
+</html>

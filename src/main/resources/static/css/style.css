@@ -102,7 +102,7 @@ body {
     box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* -------------------- Estilos dos Cards e Botões -------------------- */
+/* -------------------- Estilos Gerais dos Cards -------------------- */
 .card {
     border: 1px solid #D65DB1;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -143,52 +143,248 @@ body {
     border-color: #FFC75F;
 }
 
-/* CORREÇÃO DE LAYOUT DO GRID */
-#conteudo-atividades.row {
-    --bs-gutter-x: 1.5rem;
-    --bs-gutter-y: 1.5rem;
+/* -------------------- ESTILOS ESPECÍFICOS DOS CARDS DE ATIVIDADES -------------------- */
+#conteudo-atividades .row {
     display: flex;
     flex-wrap: wrap;
-    margin-top: calc(-1 * var(--bs-gutter-y));
-    margin-right: calc(-.5 * var(--bs-gutter-x));
-    margin-left: calc(-.5 * var(--bs-gutter-x));
 }
 
-/* -------------------- Estilos de Cores para Etapas e Habilidades (Refatorado) -------------------- */
-
-/* Estilos Genéricos de Tags */
-.habilidade-tag, .etapa-educacao-infantil, .etapa-ensino-fundamental-i, .etapa-ensino-fundamental-ii, .etapa-ensino-medio {
-    display: inline-block !important;
-    padding: 3px 8px !important;
-    margin: 2px !important;
-    border-radius: 4px !important;
-    font-weight: 600 !important;
-    white-space: nowrap !important;
-    cursor: help !important;
-    font-size: 0.85em !important;
+#conteudo-atividades .col.d-flex {
+    display: flex;
+    margin-bottom: 1.5rem;
 }
 
-/* Regras de cor unificadas para a etapa e habilidades */
-.etapa-educacao-infantil, .infantil {
+.atividade-card {
+    min-height: 550px;
+    max-height: 650px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+.atividade-card:hover {
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+}
+
+.card-img-container {
+    height: 180px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.card-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.titulo-atividade {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 3rem;
+    line-height: 1.4;
+    color: #845EC2;
+}
+
+.descricao-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    min-height: 4.5rem;
+}
+
+.descricao-text.expanded {
+    -webkit-line-clamp: unset;
+    display: block;
+    overflow: visible;
+}
+
+.toggle-desc {
+    cursor: pointer;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+.toggle-desc:hover {
+    text-decoration: underline !important;
+}
+
+/* -------------------- Estilos de Cores para Etapas e Habilidades -------------------- */
+.etapa-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.etapa-educacao-infantil {
     background-color: #f2e3f5 !important;
     border: 1px solid #845EC2 !important;
     color: #845EC2 !important;
 }
 
-.etapa-ensino-fundamental-i, .fundamental-i {
+.etapa-ensino-fundamental-i {
     background-color: #f7e1ee !important;
     border: 1px solid #D65DB1 !important;
     color: #D65DB1 !important;
 }
 
-.etapa-ensino-fundamental-ii, .fundamental-ii {
+.etapa-ensino-fundamental-ii {
     background-color: #fff4d9 !important;
     border: 1px solid #FFC75F !important;
     color: #FFC75F !important;
 }
 
-.etapa-ensino-medio, .medio {
+.etapa-ensino-medio {
     background-color: #e9ecef !important;
     border: 1px solid #343A40 !important;
     color: #343A40 !important;
+}
+
+.habilidades-container {
+    max-height: 70px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.habilidade-tag {
+    display: inline-block !important;
+    padding: 0.15rem 0.5rem !important;
+    margin: 2px !important;
+    border-radius: 4px !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+    cursor: help !important;
+    font-size: 0.75rem !important;
+    transition: all 0.2s ease !important;
+}
+
+.habilidade-tag:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+}
+
+.habilidade-tag.infantil {
+    background-color: #f2e3f5 !important;
+    border: 1px solid #845EC2 !important;
+    color: #845EC2 !important;
+}
+
+.habilidade-tag.fundamental-i {
+    background-color: #f7e1ee !important;
+    border: 1px solid #D65DB1 !important;
+    color: #D65DB1 !important;
+}
+
+.habilidade-tag.fundamental-ii {
+    background-color: #fff4d9 !important;
+    border: 1px solid #FFC75F !important;
+    color: #FFC75F !important;
+}
+
+.habilidade-tag.medio {
+    background-color: #e9ecef !important;
+    border: 1px solid #343A40 !important;
+    color: #343A40 !important;
+}
+
+/* Scrollbar personalizada */
+.habilidades-container::-webkit-scrollbar {
+    width: 4px;
+}
+
+.habilidades-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.habilidades-container::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.habilidades-container::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .atividade-card {
+        min-height: 500px;
+        max-height: 600px;
+    }
+    
+    .card-img-container {
+        height: 160px;
+    }
+}
+
+@media (max-width: 576px) {
+    .atividade-card {
+        min-height: 450px;
+        max-height: 550px;
+    }
+}
+
+/* -------------------- ESTILOS DO MODAL -------------------- */
+#modalDetalhesAtividade .modal-content {
+    border: 2px solid #845EC2;
+    border-radius: 10px;
+}
+
+#modalDetalhesAtividade .modal-header {
+    background-color: #845EC2;
+    color: white;
+    border-bottom: 2px solid #D65DB1;
+}
+
+#modalDetalhesAtividade .modal-title {
+    font-weight: 600;
+}
+
+#modalDetalhesAtividade .modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+#modalDetalhesAtividade .img-fluid {
+    max-height: 250px;
+    object-fit: cover;
+    width: 100%;
+}
+
+#modalDetalhesAtividade .text-justify {
+    text-align: justify;
+    line-height: 1.6;
+}
+
+#modalDetalhesAtividade .modal-footer {
+    border-top: 1px solid #D65DB1;
+}
+
+/* Scrollbar personalizada para o modal */
+#modalDetalhesAtividade .modal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+#modalDetalhesAtividade .modal-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+#modalDetalhesAtividade .modal-body::-webkit-scrollbar-thumb {
+    background: #845EC2;
+    border-radius: 10px;
+}
+
+#modalDetalhesAtividade .modal-body::-webkit-scrollbar-thumb:hover {
+    background: #D65DB1;
 }

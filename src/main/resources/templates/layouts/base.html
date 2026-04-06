@@ -50,6 +50,17 @@
                         </a>
                     </li>
 
+                    <!-- Doações -->
+
+                    <li class="nav-item">
+    <a class="nav-link"
+       th:href="@{/doacoes}"
+       th:classappend="${servletPath != null and servletPath.startsWith('/doacoes') ? 'active' : ''}"
+       th:attr="aria-current=${servletPath != null and servletPath.startsWith('/doacoes') ? 'page' : null}">
+        <span class="text-success">❤️ Doações</span>
+    </a>
+</li>
+
                     <!-- Sobre -->
                     <li class="nav-item">
                         <a class="nav-link"
@@ -94,6 +105,28 @@
     <!-- Conteúdo dinâmico -->
     <main layout:fragment="conteudo" class="mt-5 pt-4">
     </main>
+
+    <!-- Modal para Detalhes da Atividade -->
+    <div class="modal fade" id="modalDetalhesAtividade" tabindex="-1" aria-labelledby="modalDetalhesLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalDetalhesLabel">Detalhes da Atividade</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Conteúdo será preenchido via JavaScript -->
+                    <div id="modal-conteudo"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <a id="modal-link-atividade" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                        Acessar Atividade
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Rodapé -->
     <footer class="mt-4 text-center text-muted">

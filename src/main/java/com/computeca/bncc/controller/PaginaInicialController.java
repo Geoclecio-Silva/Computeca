@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.computeca.bncc.model.Atividade;
 import com.computeca.bncc.model.Categoria;
 import com.computeca.bncc.model.Habilidade;
+import com.computeca.bncc.model.StatusAtividade;
 import com.computeca.bncc.repository.AtividadeRepository;
 import com.computeca.bncc.util.ThymeleafUtil;
 
@@ -45,11 +46,13 @@ public class PaginaInicialController {
 
         Categoria categoriaEnum = (categoria != null && !categoria.isEmpty()) ? Categoria.valueOf(categoria) : null;
 
-        Page<Atividade> atividadesPage = atividadeRepository.buscarComFiltros(nome, categoriaEnum, etapa, habilidade, pageable);
+        // MODIFICADO: Busca apenas atividades APROVADAS
+        Page<Atividade> atividadesPage = atividadeRepository.buscarAtividadesPublicas(
+            nome, categoriaEnum, etapa, habilidade, pageable);
         
         List<Atividade> atividades = atividadesPage.getContent();
         
-        // NOVO CÓDIGO: Popula a classe de estilo para cada habilidade
+        // Popula a classe de estilo para cada habilidade
         for (Atividade atividade : atividades) {
             if (atividade.getHabilidadesBncc() != null) {
                 for (Habilidade hab : atividade.getHabilidadesBncc()) {
@@ -90,11 +93,13 @@ public class PaginaInicialController {
 
         Categoria categoriaEnum = (categoria != null && !categoria.isEmpty()) ? Categoria.valueOf(categoria) : null;
 
-        Page<Atividade> atividadesPage = atividadeRepository.buscarComFiltros(nome, categoriaEnum, etapa, habilidade, pageable);
+        // MODIFICADO: Busca apenas atividades APROVADAS
+        Page<Atividade> atividadesPage = atividadeRepository.buscarAtividadesPublicas(
+            nome, categoriaEnum, etapa, habilidade, pageable);
 
         List<Atividade> atividades = atividadesPage.getContent();
 
-        // NOVO CÓDIGO: Popula a classe de estilo para cada habilidade
+        // Popula a classe de estilo para cada habilidade
         for (Atividade atividade : atividades) {
             if (atividade.getHabilidadesBncc() != null) {
                 for (Habilidade hab : atividade.getHabilidadesBncc()) {
